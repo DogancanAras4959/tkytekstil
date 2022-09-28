@@ -1,0 +1,347 @@
+﻿@using tkytekstil.ENGINE.Dtos.ProductData
+@using tkytekstil.ENGINE.Dtos.ImagesProductData
+@using tkytekstil.ENGINE.Dtos.CategoryData
+@using tkytekstil.ENGINE.Dtos.SizeData
+@using tkytekstil.ENGINE.Dtos.ColorData
+@using tkytekstil.Core
+@using tkytekstil.COMMON.Helpers
+@using tkytekstil.ENGINE.Dtos.ColorProductData
+@using tkytekstil.ENGINE.Dtos.ProductFavoriteData
+@using tkytekstil.ENGINE.Dtos.ShoppersData
+@using tkytekstil.ENGINE.Dtos.BrandData 
+
+@{
+    ViewData["Title"] = "urunlerimiz";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    PaginationList<ProductDto> products = ViewBag.Products as PaginationList<ProductDto>;
+    List<ImagesProductDto> imageProduct = ViewBag.ListImageProducts as List<ImagesProductDto>;
+    List<SizeDto> sizes = ViewBag.ListSize as List<SizeDto>;
+    List<ColorDto> colors = ViewBag.ListColor as List<ColorDto>;
+    List<CategoriesDto> categories = ViewBag.ListCategory as List<CategoriesDto>;
+    List<ColorProductDto> colorProducts = ViewBag.ListColorProduct as List<ColorProductDto>;
+    List<ColorDto> colorFilter = SessionExtensionMethod.GetObject<List<ColorDto>>(Context.Session, "filterColorSession") as List<ColorDto>;
+    List<ProductFavoriteDto> pfList = ViewBag.pfList as List<ProductFavoriteDto>;
+    List<BrandDto> brandList = ViewBag.ListBrand as List<BrandDto>;
+    ShoppersDto shoppers = SessionExtensionMethod.GetObject<ShoppersDto>(Context.Session, "account");
+
+    var prevDisabled = !products.HasPrevious ? "disabled" : "";
+    var nextDisabled = !products.HasNextPage ? "disabled" : "";
+
+    int pageTotal = Convert.ToInt32(TempData["pageSizeCalculate"]);
+
+}
+
+<style>
+    .sidebar-list > li > a {
+        font-size: 14px;
+        color: #2e2e2e;
+        text-transform: capitalize;
+        line-height: 20px;
+        position: relative;
+        display: block;
+        padding: 10px 0;
+        font-weight: 500;
+        font-family: "Montserrat", sans-serif;
+    }
+</style>
+
+<div class="section section-margin" style="margin-top:20px;">
+    <div class="container">
+        <div class="row flex-row-reverse">
+            <div class="col-lg-9 col-12 col-custom">
+
+                <!--shop toolbar start-->
+                <div class="shop_toolbar_wrapper flex-column flex-md-row" style="margin-bottom:20px;">
+
+                    <!-- Shop Top Bar Left start -->
+                    <div class="shop-top-bar-left mb-md-0 mb-2">
+                        <div class="shop-top-show">
+                            <span>Toplam @pageTotal üründen @products.Count adet gösteriliyor </span>
+                        </div>
+                    </div>
+                    <!-- Shop Top Bar Left end -->
+                    <!-- Shopt Top Bar Right Start -->
+                    <div class="shop-top-bar-right">
+                        @*<div class="shop-short-by mr-4">
+                                <select class="nice-select" aria-label=".form-select-sm example">
+                                    <option selected>30 Göster</option>
+                                    <option value="1">Göster</option>
+                                    <option value="2">24 Göster</option>
+                                    <option value="3">30 Göster</option>
+                                </select>
+                            </div>
+
+                            <div class="shop-short-by mr-4">
+                                <select class="nice-select" aria-label=".form-select-sm example">
+                                    <option selected>Varsayılan Sıralama</option>
+                                    <option value="1">İsme Göre Sırala</option>
+                                    <option value="2">Son Eklenen</option>
+                                </select>
+                            </div>*@
+                        <div class="shop_toolbar_btn">
+                            <button data-role="grid_3" type="button" class="active btn-grid-4" title="Grid"><i class="fa fa-th"></i></button>
+                        </div>
+                    </div>
+                    <!-- Shopt Top Bar Right End -->
+
+                </div>
+
+                @if (TempData["keyword"] != null)
+                {
+                    <div class="row" style="margin-bottom:10px;">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <h4> <strong>"@TempData["keyword"]"</strong> kelimesi için toplam "@TempData["count"]" sonuç bulundu!</h4>
+                        </div>
+                    </div>
+                }
+
+
+                @if (colorFilter != null && colorFilter.Count > 0)
+                {
+                    <div class="row" style="margin-bottom:20px;">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="btn-group">
+                                @foreach (var item in colorFilter)
+                                {
+                                    @if (item.ColorName == "EKRU" || item.ColorName == "BEYAZ")
+                                    {
+                                        <a href="@Url.Action("urunlerimiz","anasayfa", new { renkFiltreClose = item.ColorName })" id="@item.ID" class="btn btn-sm" style="margin-left:5px; background-color:@item.ColorCode; color:#000; border:1px solid #000;">Kaldır</a>
+                                    }
+
+                                    else
+                                    {
+                            <a href="@Url.Action("urunlerimiz","anasayfa", new { renkFiltreClose = item.ColorName })" id="@item.ID" class="btn btn-sm" style="margin-left:5px; background-color:@item.ColorCode; color:#fff;">Kaldır</a>
+                                    }
+                                }
+                                <a href="@Url.Action("clearfilter","anasayfa")" class="btn btn-sm btn-default" style="margin-left:15px; border:1px solid #000;">Filtreyi Temizle </a>
+                                <span style="margin-left:10px;">filtresinden <strong>@TempData["Count"]</strong> ürün</span>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="row shop_wrapper grid_3">
+
+                    @foreach (var item in products.OrderByDescending(x=> x.SortedRow == true))
+                    {
+                        <div class="col-lg-4 col-md-4 col-sm-6 product" data-aos="fade-up" data-aos-delay="200">
+                            <div class="product-inner">
+                                <div class="thumb">
+                                    <a href="@Url.Action("detay","urun", new { Id = item.ID, productname = item.GenerateSlug() })" class="image">
+                                        <img class="first-image" style="object-fit:cover; height:360px;" src="https://uploads.tkytekstil.com/img/@item.ProductBaseImage" alt="@item.ProductBaseImage" />
+                                        @foreach (var item2 in imageProduct.Where(x => x.ProductId == item.ID).Take(1))
+                                        {
+                                            <img class="second-image" style="object-fit:cover; height:360px;" src="https://uploads.tkytekstil.com/img/@item2.Image" alt="@item2.Image" />
+                                        }
+                                    </a>
+                                    @if (shoppers != null)
+                                    {
+                                        @if (pfList.Count > 0)
+                                        {
+                                            if (pfList.Where(x => x.ProductId == item.ID && x.ShopperId == shoppers.ID).Count() > 0)
+                                            {
+                                                <div class="actions">
+                                                    <a href="@Url.Action("favorilerdencikar", "urun", new { productId = item.ID })" class="action wishlist"><i class="pe-7s-like text-danger"></i></a>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="actions">
+                                                    <a href="@Url.Action("favorilereekle", "urun", new { productId = item.ID })" class="action wishlist"><i class="pe-7s-like"></i></a>
+                                                </div>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <div class="actions">
+                                                <a href="@Url.Action("favorilereekle", "urun", new { productId = item.ID })" class="action wishlist"><i class="pe-7s-like"></i></a>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="actions">
+                                            <a href="@Url.Action("favorilereekle", "urun", new { productId = item.ID })" class="action wishlist"><i class="pe-7s-like"></i></a>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="content">
+                                    <h4 class="sub-title"><a href="@Url.Action("urunlerimiz","anasayfa", new { categoryId = item.CategoryId })">@item.categoryProduct.CategoryName</a></h4>
+                                    <h5 class="title"><a href="@Url.Action("detay","urun", new { Id = item.ID, productname = item.GenerateSlug() })">@item.ProductName</a></h5>
+                                    <div class="product-summery position-relative">
+
+                                        <div class="product-color-variation mb-3">
+
+                                            @foreach (var item2 in colorProducts.Where(x => x.ProductId == item.ID))
+                                            {
+                                                <a href="@Url.Action("urunlerimiz","anasayfa", new { renkFiltre = item2.color.ColorName })" id="@item2.ID" class="btn" style="border: 1px solid #000; background-color: @item2.color.ColorCode"></a>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="shop-list-btn">
+                                        <a title="Wishlist" href="#" class="btn btn-sm btn-outline-dark btn-hover-primary wishlist"><i class="fa fa-heart"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+                <!-- Shop Wrapper End -->
+                <!--shop toolbar start-->
+                <div class="shop_toolbar_wrapper mt-10">
+
+                    <div class="shop-top-bar-right">
+                        <nav>
+                            <ul class="pagination">
+                                <li class="page-item @prevDisabled">
+                                    <a class="page-link" asp-action="urunlerimiz" asp-route-pageNumber="@(products.PageIndex-1)" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item @nextDisabled">
+                                    <a class="page-link" asp-action="urunlerimiz" asp-route-pageNumber="@(products.PageIndex+1)" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <!-- Shopt Top Bar Right End -->
+
+                </div>
+                <!--shop toolbar end-->
+
+            </div>
+            <div class="col-lg-3 col-12 col-custom">
+                <!-- Sidebar Widget Start -->
+                <aside class="sidebar_widget mt-10 mt-lg-0">
+                    <div class="widget_inner" data-aos="fade-up" data-aos-delay="200">
+                        <div class="widget-list">
+                            <h3 class="widget-title mb-4">Arama Yap</h3>
+                            <div class="search-box">
+                                <form method="get" style="width:100%" asp-controller="anasayfa" asp-action="urunlerimiz">
+                                    <input type="text" class="form-control" placeholder="Bir ürün arayın..." aria-label="Bir ürün arayın..." name="searchString" id="searchString">
+                                    <button style="position:relative; float:right; bottom:45px;" class="btn btn-dark btn-hover-primary" type="submit">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                </form>
+
+                            </div>
+                        </div>
+                        <div class="widget-list mb-10">
+                            <h3 class="widget-title mb-4">Ürünlerini Filtrele</h3>
+                            <!-- Widget Menu Start -->
+                            <nav>
+                                <ul class="category-menu mb-n3">
+                                    <li class="menu-item-has-children pb-4">
+                                        <a href="#">Markalar <i class="fa fa-angle-down"></i></a>
+                                        <ul class="dropdown">
+                                            @foreach (var item in brandList)
+                                            {
+                                                <li><a href="@Url.Action("urunlerimiz","anasayfa", new { brandId = item.ID })">@item.BrandName</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <!-- Widget Menu End -->
+                        </div>
+                        <!--<div class="widget-list mb-10">
+                        <h3 class="widget-title mb-5">Fiyat Aralığı</h3>-->
+                        <!-- Widget Menu Start -->
+                        <!--<form action="#">
+                            <div id="slider-range"></div>
+                            <button class="slider-range-submit" type="submit">Filtrele</button>
+                            <input class="slider-range-amount" type="text" name="text" id="amount" />
+                        </form>-->
+                        <!-- Widget Menu End -->
+                        <!--</div>-->
+                        <div class="widget-list mb-10">
+                            <h3 class="widget-title">Kategoriler</h3>
+                            <div class="sidebar-body">
+                                <ul class="sidebar-list">
+                                    @foreach (var item in categories)
+                                    {
+                                        <li><a href="@Url.Action("urunlerimiz","anasayfa", new { categoryId = item.ID })">@item.CategoryName</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        @*</div>
+                        <div class="widget-list mb-10">
+                            <h3 class="widget-title">Beden</h3>
+                            <div class="sidebar-body">
+                                <form method="get" asp-action="urunlerimiz" asp-controller="anasayfa">
+                                    <ul class="checkbox-container categories-list">
+
+                                        @for (int i = 0; i < sizes.Count; i++)
+                                        {
+                                            string customChech = "customCheckNumber" + sizes[i].ID;
+                                            <li>
+                                                <div class="custom-control custom-checkbox">
+
+                                                    <input type="checkbox" class="custom-control-input" id="@customChech" value="@sizes[i].ID">
+                                                    <label class="custom-control-label" for="@customChech">@sizes[i].SizeNumber</label>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+                                </form>
+
+                            </div>
+                            </div>*@
+                            <div class="widget-list mb-10" style="margin-top: 50px;">
+                                <h3 class="widget-title">Renkler</h3>
+                                <div class="sidebar-body">
+                                    <ul class="checkbox-container categories-list">
+                                        @foreach (var item in colors)
+                                        {
+                                            string customChech = "customCheck" + item.ID;
+                                            <li>
+                                                <div class="custom-control custom-checkbox">
+                                                    <a href="@Url.Action("urunlerimiz","anasayfa", new { renkFiltre = item.ColorName })">
+                                                        <div style="background-color:@item.ColorCode; width:20px; height:20px; display:inline-block; border: 1px solid #000;"></div>
+                                                        <label style="position: relative; top: -5px; left: 3px;" class="custom-control-label" for="@customChech">@item.ColorName</label>
+                                                    </a>
+                                                    @*<input type="checkbox" class="custom-control-input" id="@customChech">*@
+
+                                                </div>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                    <!-- Sidebar Widget End -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/assets/js/vendor/jquery-3.6.0.min.js"></script>
+
+    <script type="text/javascript">
+
+    function getValue(value) {
+        var sizeId = value;
+
+         $.ajax({
+             type: 'GET',
+             url: '@Url.Action("urunlerimiz","anasayfa")',
+             data: { sizeId: sizeId},
+             success: function (response) {
+
+            }
+        });
+
+    }
+
+    </script>
+
+
+

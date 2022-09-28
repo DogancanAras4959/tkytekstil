@@ -1,0 +1,206 @@
+﻿@using tkytekstil.ENGINE.Dtos.SizeData
+@using tkytekstil.ENGINE.Dtos.ColorData
+
+@{
+
+    List<SizeDto> sizeList = ViewBag.Size as List<SizeDto>;
+    List<ColorDto> colorList = ViewBag.Color as List<ColorDto>;
+
+}
+
+@{
+    ViewData["Title"] = "urunbilesenleri";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th><button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#target-insert">+</button></th>
+                                <th>Beden</th>
+                                <th>Durum</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in sizeList)
+                            {
+                                <tr>
+                                    <th scope="row">@item.ID</th>
+                                    <td>@item.SizeNumber</td>
+                                    @if (item.IsActive == true)
+                                    {
+                                        <td>Aktif</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Pasif</td>
+                                    }
+                                    <td>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm edit" title="Düzenle" data-bs-toggle="modal" data-bs-target="#silmodal_@item.ID"><i class="fas fa-pencil-alt" title="Edit"></i></button>
+                                        <a class="btn btn-outline-secondary btn-sm deleted" title="Sil" href="@Url.Action("bedensil","urun", new { Id = item.ID })">
+                                            <i class="fas fa-trash" title="Delete"></i>
+                                        </a>
+                                        <a class="btn btn-outline-secondary btn-sm above" title="Aktif/Pasif" href="@Url.Action("bedendurumduzenle","urun", new { Id = item.ID })">
+                                            <i class="fas fa-wifi" title="Aktif/Pasif"></i>
+                                        </a>
+                                        <div class="modal fade bs-example-modal-center" id="silmodal_@item.ID" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Beden Güncelle</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        @{await Html.RenderPartialAsync("bedenduzenle", item);}
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div>
+
+                                        @*<a class="btn btn-outline-secondary btn-sm deleted" title="Sil" href="@Url.Action("markasil","hesap", new { Id = item.ID })">
+                                                <i class="fas fa-trash" title="Delete"></i>
+                                            </a>
+                                            <a class="btn btn-outline-secondary btn-sm above" title="Aktif/Pasif" href="@Url.Action("markadurumduzenle","hesap", new { Id = item.ID })">
+                                                <i class="fas fa-wifi" title="Aktif/Pasif"></i>
+                                            </a>*@
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th><button type="button" class="btn btn-primary waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#target-insert-color">+</button></th>
+                                <th>Renk</th>
+                                <th>Renk Adı</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in colorList)
+                            {
+                                <tr>
+                                    <th scope="row">@item.ID</th>
+                                    <td><div style="width: 25px; height: 25px; border-radius: 15px; border: 1px solid #000; background-color: @item.ColorCode"></div></td>
+                                    <td>@item.ColorName</td>
+                                    <td>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm edit" title="Düzenle" data-bs-toggle="modal" data-bs-target="#renksilmodal_@item.ID"><i class="fas fa-pencil-alt" title="Edit"></i></button>
+                                        <div class="modal fade bs-example-modal-center" id="renksilmodal_@item.ID" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Renk Güncelle</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        @{await Html.RenderPartialAsync("renkduzenle", item);}
+                                                    </div>
+                                                </div><!-- /.modal-content -->
+                                            </div><!-- /.modal-dialog -->
+                                        </div>
+                                        <a class="btn btn-outline-secondary btn-sm deleted" title="Sil" href="@Url.Action("renksil","urun", new { Id = item.ID })">
+                                            <i class="fas fa-trash" title="Delete"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-center" id="target-insert" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Beden Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="@Url.Action("bedenolustur","urun")" novalidate="" class="needs-validation">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="validationCustom01" class="form-label">Beden Numarası</label>
+                                <input type="text" name="SizeNumber" class="form-control" id="validationCustom01" placeholder="Beden Numarası giriniz" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" type="submit">Beden Numarası Oluştur</button>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+<div class="modal fade bs-example-modal-center" id="target-insert-color" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Renk Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="@Url.Action("renkolustur","urun")" novalidate="" class="needs-validation">
+                    <div class="row mb-2">
+                        <label for="validationCustom01" class="form-label">Renk</label>
+                        <div class="col-md-2" style="padding-right:5px;">
+                            <input type="color" id="colorPicker" style="height: 40px; padding: 5px;" class="form-control" />
+                        </div>
+                        <div class="col-md-10" style="padding-left:0px;">
+                            <input type="text" name="ColorCode" class="form-control" id="colorValue" placeholder="Renk Seçiniz..." />
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <label for="validationCustom01" class="form-label">Renk Adı</label>
+                        <div class="col-md-12">
+                            <input type="text" name="ColorName" placeholder="Renk adı giriniz..." class="form-control" />
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" type="submit">Renk Oluştur</button>
+                    </div>
+                </form>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+<script>
+
+    //find counter carColorPicker
+    var carColorPicker = document.getElementById('colorPicker');
+    //add on color change event
+    carColorPicker.addEventListener("change", onColorChanged, true);
+
+    function onColorChanged(event) {
+
+        document.getElementById('colorValue').value = carColorPicker.value;
+       
+    }
+
+</script>

@@ -1,0 +1,91 @@
+﻿@model tkytekstil.ENGINE.Dtos.ShoppersData.ShoppersDto
+
+@{
+    ViewData["Title"] = "girisyap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="section">
+
+    <!-- Breadcrumb Area Start -->
+    <div class="breadcrumb-area bg-light">
+        <div class="container-fluid">
+            <div class="breadcrumb-content text-center">
+                <h1 class="title">Kayıt | Başvuru Yap</h1>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("sayfa","anasayfa")">Ana Sayfa </a>
+                    </li>
+                    <li class="active"> Kayıt | Başvuru Yap</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Area End -->
+
+</div>
+
+<div class="section section-margin">
+    <div class="container">
+
+        <div class="row mb-n10">
+            <div class="col-lg-6 col-md-8 m-auto m-lg-0 pb-10">
+                <!-- Login Wrapper Start -->
+                <div class="login-wrapper">
+
+                    <!-- Login Title & Content Start -->
+                    <div class="section-content text-center mb-5">
+                        <h2 class="title mb-2">Giriş Yap</h2>
+                        <p class="desc-content">Kayıtlı bir hesabınız varsa giriş yapın.</p>
+                    </div>
+                    <!-- Login Title & Content End -->
+                    <!-- Form Action Start -->
+                    <form action="@Url.Action("oturumac","bayi")" method="post">
+
+                        <!-- Input Email Start -->
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperUserName" type="text" placeholder="Kullanıcı adınızı giriniz">
+                        </div>
+                        <!-- Input Email End -->
+                        <!-- Input Password Start -->
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperPassword" type="password" placeholder="Şifrenizi giriniz">
+                        </div>
+                        <!-- Input Password End -->
+                        <!-- Checkbox/Forget Password Start -->
+                        <div class="single-input-item mb-1">
+                            <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
+                                <a href="#" class="forget-pwd mb-3">Şifrenizi mi unuttunuz?</a>
+                            </div>
+                        </div>
+                        <!-- Checkbox/Forget Password End -->
+                        <!-- Login Button Start -->
+                        <div class="single-input-item mb-1">
+                            <button class="btn btn btn-dark btn-hover-primary rounded-0">Giriş Yap</button>
+                        </div>
+
+                    </form>
+                    <!-- Form Action End -->
+
+                </div>
+                <!-- Login Wrapper End -->
+            </div>
+            <div class="col-lg-6 col-md-8 m-auto m-lg-0 pb-10">
+                <!-- Register Wrapper Start -->
+                <div class="register-wrapper">
+
+                    <div class="section-content text-center mb-5">
+                        <h2 class="title mb-2">Başvuru Yapın</h2>
+                        <p class="desc-content">Sitemizdeki ürünlerimize göz atın ve sipariş etmek için önce kayıt olun.</p>
+                    </div>
+                    <div class="single-input-item mb-1">
+                        <a style="display:block;" href="@Url.Action("basvuruyap","bayi")" class="btn btn btn-dark btn-hover-primary rounded-0">Kayıt Ol</a>
+                    </div>
+                </div>
+                <!-- Register Wrapper End -->
+            </div>
+        </div>
+
+    </div>
+</div>

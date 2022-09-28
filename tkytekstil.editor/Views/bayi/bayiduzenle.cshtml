@@ -1,0 +1,147 @@
+﻿@model tkytekstil.ENGINE.Dtos.ShoppersData.ShoppersDto
+@{
+    ViewData["Title"] = "bayiduzenle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-xl-8">
+    <div class="card">
+        <div class="card-body">
+            <form method="post" action="@Url.Action("bayiguncelle","bayi")" novalidate="" class="needs-validation">
+                @Html.HiddenFor(x => x.ID)
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="validationCustom01" class="form-label">Bayi Adı</label>
+                            @Html.TextBoxFor(x => x.ShopperName, new { @class = "form-control", id = "ShopperName", placeholder = "Bayi adınızı giriniz", @required = "" })
+                            <div class="valid-feedback">
+                                Kullanıcı adı geçerli!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="validationCustom02" class="form-label">Telefon No</label>
+                            @Html.TextBoxFor(x => x.ShopperPhone, new { @class = "form-control", id = "ShopperPhone", placeholder = "Bayi telefonunuzu giriniz", @required = "" })
+                            <div class="valid-feedback">
+                                Görünen isim geçerli!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="validationCustom01" class="form-label">Email Adresi</label>
+                            @Html.TextBoxFor(x => x.ShopperEmail, new { @class = "form-control", id = "ShopperEmail", placeholder = "Email adresinizi giriniz", @required = "" })
+                            <div class="valid-feedback">
+                                Kullanıcı adı geçerli!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="validationCustom02" class="form-label">Adres</label>
+                            @Html.TextBoxFor(x => x.ShopperAddress, new { @class = "form-control", id = "ShopperAdress", placeholder = "Adresinizi giriniz", @required = "" })
+                            <div class="valid-feedback">
+                                Görünen isim geçerli!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="validationCustom03" class="form-label">İl</label>
+                            @Html.DropDownListFor(x => x.CityId, (SelectList)ViewBag.City, "İl Seçiniz", new { @class = "form-select", id = "CityId", @required = "" })
+                            <div class="invalid-feedback">
+                                Seçilen rol geçerli.
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="validationCustom04" class="form-label">İlçe</label>
+                            <select id="ilceler" class="form-control"></select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-check form-switch mb-3" dir="ltr">
+                    @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-input", id = "IsActive" })
+                    <label class="form-check-label" for="customSwitch1">Aktif mi?</label>
+                </div>
+                <div>
+                    <button id="btn_insert" class="btn btn-primary" type="submit">Kullanıcıyı Güncelle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- end card -->
+</div>
+
+<script src="~/assets/libs/jquery/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    getIlceler();
+
+    $("#CityId").change(function () {
+        getIlceler();
+    })
+
+    function getIlceler() {
+        $("#ilceler").html('');
+        var sehirID = $("#CityId").val();
+        $.ajax({
+            url: "/bayi/GetIlcelerBySehirID/" + sehirID,
+            type: "GET",
+            success: function (data) {
+                data.forEach(x => {
+
+                    let option = '<option value="' + x.ID + '">' + x.ProvinceName + '</option>';
+                    $("#ilceler").append(option);
+
+                })
+            },
+            error: function (e, j, k) {
+                //let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
+                //toastr["warning"](responseText, "Uyarı !");
+                console.log(e.responseJSON);
+            }
+        });
+    }
+
+    $("#btn_insert").click(function () {
+
+        let formData = {
+            ID: @Model.ID,
+            ShopperName: $("#ShopperName").val(),
+            ShopperEmail: $("#ShopperEmail").val(),
+            ShopperPhone: $("#ShopperPhone").val(),
+            ShopperAddress: $("#ShopperAddress").val(),
+            IsActive: $("#IsActive").val(),
+            CityId: Number.parseInt($("#CityId").val()),
+            ilceID: Number.parseInt($("#ilceler").val())
+        };
+
+        console.log(formData);
+        $.ajax({
+            type: "post",
+            url: "/bayi/bayiguncelle",
+            data: JSON.stringify(formData),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                /*toastr["success"]("Bilgileri ekleme işlemi başarılı!", "Başarılı");*/
+            },
+            error: function (e, j, k) {
+                //let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
+                //toastr["error"](responseText, "Uyarı");
+                console.log(e.responseJSON);
+            }
+
+        });
+    });
+
+</script>

@@ -1,0 +1,169 @@
+﻿@using tkytekstil.ENGINE.Dtos.OrderData
+@using tkytekstil.ENGINE.Dtos.ShoppersData
+@using tkytekstil.Core
+
+@{
+    ViewData["Title"] = "hesabim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<OrderDto> orders = ViewBag.Orders as List<OrderDto>;
+
+    ShoppersDto shopper = SessionExtensionMethod.GetObject<ShoppersDto>(Context.Session, "account");
+
+}
+
+<style type="text/css">
+    input {
+        pointer-events: none;
+        opacity: 0.5 !important; /* Fade effect */
+        cursor: not-allowed; /* Cursor change to disabled state*/
+    }
+
+    textarea {
+        pointer-events: none;
+        opacity: 0.5 !important; /* Fade effect */
+        cursor: not-allowed; /* Cursor change to disabled state*/
+    }
+
+    tr td:last-child {
+        width: 1% !important;
+        white-space: nowrap !important;
+    }
+</style>
+
+<div class="section">
+
+    <!-- Breadcrumb Area Start -->
+    <div class="breadcrumb-area bg-light">
+        <div class="container-fluid">
+            <div class="breadcrumb-content text-center">
+                <h1 class="title">Hesabım</h1>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("sayfa","anasayfa")">Ana Sayfa </a>
+                    </li>
+                    <li class="active">Hesabım</li>
+                    <li><a href="@Url.Action("cikisyap","bayi")">Çıkış Yap</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Area End -->
+
+</div>
+
+<div class="section section-margin">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-5">
+                <div class="checkbox-form">
+
+                    <!-- Checkbox Form Title Start -->
+                    <h3 class="title">Müşteri Bilgileri</h3>
+                    <!-- Checkbox Form Title End -->
+
+                    <div class="row">
+
+                        <!-- Select Country Name Start -->
+                        <div class="col-md-12 mb-6 disabled">
+                            <div class="country-select">
+                                <label>Ülke <span class="required">*</span></label>
+                                <select class="myniceselect nice-select wide rounded-0 disabled">
+                                    <option data-display="Türkiye">Türkiye</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="checkout-form-list">
+                                <label>İl<span class="required">*</span></label>
+                                <input type="text" class="disabled" name="@shopper.city" value="@shopper.ShopperCity">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="checkout-form-list">
+                                <label>İlçe <span class="required">*</span></label>
+                                <input placeholder="" class="disabled" type="text" name="@shopper.province" value="@shopper.ShopperProvice">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="checkout-form-list">
+                                <label>Adınız Soyadınız <span class="required">*</span></label>
+                                <input placeholder="" class="disabled" type="text" name="@shopper.ShopperName" value="@shopper.ShopperName">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="checkout-form-list">
+                                <label>Email Address<span class="required">*</span></label>
+                                <input placeholder="" class="disabled" type="text" name="@shopper.ShopperEmail" value="@shopper.ShopperEmail">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="checkout-form-list">
+                                <label>Telefon No</label>
+                                <input placeholder="" class="disabled" name="@shopper.ShopperPhone" value="@shopper.ShopperPhone" type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="checkout-form-list">
+                                <label>Adres<span class="required">*</span></label>
+                                <textarea class="form-control disabled">@shopper.ShopperAddress</textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-7">
+
+                <!-- Cart Table Start -->
+                <div class="cart-table table-responsive">
+                    <div class="checkbox-form">
+                        <h3 class="title">Tamamlanan Siparişler</h3>
+                    </div>
+                    <table class="table table-bordered">
+
+                        <!-- Table Head Start -->
+                        <thead>
+                            <tr>
+                                <th class="pro-thumbnail">#</th>
+                                <th class="pro-title">Zaman</th>
+                                <th class="pro-subtotal">Adet</th>
+                                <th class="pro-remove">İşlem</th>
+                            </tr>
+                        </thead>
+                        <!-- Table Head End -->
+                        <tbody>
+                            @if (orders != null)
+                            {
+                                foreach (var item in orders.Where(x => x.IsDone == true))
+                                {
+                                    <tr>
+                                        <td class="pro-thumbnail"><a href="#">@item.OrderNo</a></td>
+                                        <td class="pro-title">@item.CreatedTime.ToString("dd MMMM, yyyy | HH:mm")</td>
+                                        <td class="pro-price"><span>@item.Quantity</span></td>
+                                        <td class="pro-title"><a href="@Url.Action("urunlerim","bayi", new { Id = item.ID })"><i class="pe-7s-cart"></i></a></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td class="prp-title">Sipariş bulunmuyor!</td></tr>
+                            }
+                        </tbody>
+                        <!-- Table Body End -->
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

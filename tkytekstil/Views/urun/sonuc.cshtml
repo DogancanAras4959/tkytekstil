@@ -1,0 +1,68 @@
+﻿
+@{
+    ViewData["Title"] = "sonuc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<style>
+    .error_form .title {
+        font-size: 60px;
+        font-weight: 700;
+        color: #ff4545;
+        letter-spacing: 1px;
+        line-height: .73;
+        margin: 0px 0 23px;
+    }
+
+    .error_form .sub-title {
+        font-size: 24px;
+        text-transform: none;
+        font-weight: 500;
+        line-height: 1;
+        margin-bottom: 14px;
+    }
+
+    .error_form p {
+        font-size: 17px;
+        font-weight: 400;
+        margin-bottom: 22px;
+    }
+</style>
+
+<div class="section">
+
+    <!-- Breadcrumb Area Start -->
+    <div class="breadcrumb-area bg-light">
+        <div class="container-fluid">
+            <div class="breadcrumb-content text-center">
+                <h1 class="title">Sonuç</h1>
+                <ul>
+                    <li>
+                        <a href="index.html">Ana Sayfa </a>
+                    </li>
+                    <li class="active"> Sonuç</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Area End -->
+
+</div>
+<!-- Breadcrumb Section End -->
+<!-- 404 Error Section Start -->
+<div class="section section-margin">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="error_form">
+                    <h1 class="title text-success">Tebrikler!</h1>
+                    <h2 class="sub-title">Siparişiniz Alındı</h2>
+                    <p>Siparişiniz alındı. En kısa sürede sizlere mail yoluyla veya telefon üzerinden<br> ulaşıp bilgilendireceğiz!</p>
+                    <a href="@Url.Action("sayfa","anasayfa")" class="btn btn-primary btn-hover-dark rounded-0">Ana Sayfaya Dön</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

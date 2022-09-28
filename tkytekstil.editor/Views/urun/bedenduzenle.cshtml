@@ -1,0 +1,17 @@
+﻿@model tkytekstil.ENGINE.Dtos.SizeData.SizeDto
+
+<form method="post" action="@Url.Action("bedenguncelle","urun")" novalidate="" class="needs-validation">
+    @Html.HiddenFor(x=> x.ID)
+    <div class="row">
+        <div class="col-md-12">
+            <div class="mb-3">
+                <label for="validationCustom01" class="form-label">Beden Numarası</label>
+                @Html.TextBoxFor(x=> x.SizeNumber, new { @class="form-control", id="validationCustom01", placeholder="Beden Numarası giriniz", @required="" })
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-primary" type="submit">Beden Numarası Güncelle</button>
+    </div>
+</form>
+

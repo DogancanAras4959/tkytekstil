@@ -1,0 +1,189 @@
+﻿@using tkytekstil.ENGINE.Dtos.ShoppersData
+@using tkytekstil.Core
+@using tkytekstil.ENGINE.Dtos.ProductData
+@using tkytekstil.Models
+
+@{
+    ViewData["Title"] = "siparis";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<CartItems> cartItems = SessionExtensionMethod.GetObject<List<CartItems>>(Context.Session, "cart");
+    ShoppersDto shopper = SessionExtensionMethod.GetObject<ShoppersDto>(Context.Session, "account"); 
+
+}
+
+<style type="text/css">
+    input {
+        pointer-events: none;
+        opacity: 0.5 !important; /* Fade effect */
+        cursor: not-allowed; /* Cursor change to disabled state*/
+    }
+
+    textarea {
+        pointer-events: none;
+        opacity: 0.5 !important; /* Fade effect */
+        cursor: not-allowed; /* Cursor change to disabled state*/
+    }
+</style>
+
+<!-- Breadcrumb Section Start -->
+<div class="section">
+
+    <!-- Breadcrumb Area Start -->
+    <div class="breadcrumb-area bg-light">
+        <div class="container-fluid">
+            <div class="breadcrumb-content text-center">
+                <h1 class="title">Sipariş</h1>
+                <ul>
+                    <li>
+                        <a href="index.html">Ana Sayfa</a>
+                    </li>
+                    <li class="active"> Sipariş</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Area End -->
+
+</div>
+<!-- Breadcrumb Section End -->
+<!-- Checkout Section Start -->
+<div class="section section-margin">
+    <div class="container">
+
+        <div class="row mb-n4">
+            <div class="col-lg-6 col-12 mb-4">
+
+                <!-- Checkbox Form Start -->
+                <form action="#">
+                    <div class="checkbox-form">
+
+                        <!-- Checkbox Form Title Start -->
+                        <h3 class="title">Müşteri Bilgileri</h3>
+                        <!-- Checkbox Form Title End -->
+
+                        <div class="row">
+
+                            <!-- Select Country Name Start -->
+                            <div class="col-md-12 mb-6 disabled">
+                                <div class="country-select">
+                                    <label>Ülke <span class="required">*</span></label>
+                                    <select class="myniceselect nice-select wide rounded-0 disabled">
+                                        <option data-display="Türkiye">Türkiye</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="checkout-form-list">
+                                    <label>İl<span class="required">*</span></label>
+                                    <input type="text" class="disabled" name="@shopper.city" value="@shopper.ShopperCity">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="checkout-form-list">
+                                    <label>İlçe <span class="required">*</span></label>
+                                    <input placeholder="" class="disabled" type="text" name="@shopper.province" value="@shopper.ShopperProvice">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="checkout-form-list">
+                                    <label>Adınız Soyadınız <span class="required">*</span></label>
+                                    <input placeholder="" class="disabled" type="text" name="@shopper.ShopperName" value="@shopper.ShopperName">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="checkout-form-list">
+                                    <label>Email Address<span class="required">*</span></label>
+                                    <input placeholder="" class="disabled" type="text" name="@shopper.ShopperEmail" value="@shopper.ShopperEmail">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="checkout-form-list">
+                                    <label>Telefon No</label>
+                                    <input placeholder="" class="disabled" name="@shopper.ShopperPhone" value="@shopper.ShopperPhone" type="text">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="checkout-form-list">
+                                    <label>Adres<span class="required">*</span></label>
+                                    <textarea class="form-control disabled">@shopper.ShopperAddress</textarea>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="col-lg-6 col-12 mb-4">
+
+                <!-- Your Order Area Start -->
+                <div class="your-order-area border">
+
+                    <!-- Title Start -->
+                    <h3 class="title">Siparişiniz</h3>
+                    <!-- Title End -->
+                    <!-- Your Order Table Start -->
+                    <div class="your-order-table table-responsive">
+                        <table class="table">
+
+                            <!-- Table Head Start -->
+                            <thead>
+                                <tr class="cart-product-head">
+                                    <th class="cart-product-name text-start">Ürün</th>
+                                    <th class="cart-product-total text-end">Adet</th>
+                                </tr>
+                            </thead>
+
+                            <!-- Table Body Start -->
+                            <tbody>
+                                @foreach (var item in cartItems)
+                                {
+                                    <tr class="cart_item">
+                                        <td class="cart-product-name text-start ps-0"> @item.products.ProductName | @item.Color | @item.Size</td>
+                                        <td class="cart-product-total text-end pe-0"><strong class="product-quantity"> x @item.Quantity</strong></td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                    <!-- Payment Accordion Order Button Start -->
+                    <div class="payment-accordion-order-button">
+                        <div class="payment-accordion">
+                            <div class="single-payment">
+                                <h5 class="panel-title mb-3">
+                                    <a class="collapse-off" data-bs-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                        Bayi Sipariş Teklifi
+                                    </a>
+                                </h5>
+                                <div class="collapse show" id="collapseExample">
+                                    <div class="card card-body rounded-0">
+                                        <p>Belirlediğiniz ürünlerle siparişinizi tamamladığınız süreçte, sizleri mail adresiniz üzerinden bilgilendireceğiz.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="order-button-payment">
+                            <a href="@Url.Action("siparistamamla","urun")" class="btn btn-dark btn-hover-primary rounded-0 w-100">Siparişi Bitir</a>
+                        </div>
+                    </div>
+                    <!-- Payment Accordion Order Button End -->
+                </div>
+                <!-- Your Order Area End -->
+            </div>
+        </div>
+    </div>
+</div>
+

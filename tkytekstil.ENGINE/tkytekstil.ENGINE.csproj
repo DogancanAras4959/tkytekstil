@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor" Version="2.2.0" />
+    <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\tkytekstil.COMMON\tkytekstil.COMMON.csproj" />
+    <ProjectReference Include="..\tkytekstil.CORE\tkytekstil.CORE.csproj" />
+    <ProjectReference Include="..\tkytekstil.DAL\tkytekstil.DAL.csproj" />
+  </ItemGroup>
+
+</Project>

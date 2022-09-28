@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewData["Title"] = "kayitsonuc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<style>
+    .error_form .title {
+        font-size: 50px;
+        font-weight: 700;
+        color: #ff4545;
+        letter-spacing: 4px;
+        line-height: .73;
+        margin: 0 0 19px;
+    }
+</style>
+
+<div class="section">
+
+    <!-- Breadcrumb Area Start -->
+    <div class="breadcrumb-area bg-light">
+        <div class="container-fluid">
+            <div class="breadcrumb-content text-center">
+                <h1 class="title">Kayıt Sonuç</h1>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("sayfa","anasayfa")">Ana Sayfa </a>
+                    </li>
+                    <li class="active"> Kayıt Sonuç</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Area End -->
+
+</div>
+<!-- Breadcrumb Section End -->
+<!-- 404 Error Section Start -->
+<div class="section section-margin">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="error_form">
+                    @if (ViewBag.Type == 1)
+                    {
+                        <h4 class="title">Başarılı</h4>
+                        <h2 class="sub-title">Başvurunuz alındı</h2>
+                        <p>@ViewBag.Result</p>
+                        <a href="@Url.Action("sayfa","anasayfa")" class="btn btn-primary btn-hover-dark rounded-0">Ana Sayfa'ya dönün</a>
+                    }
+                    @if (ViewBag.Type == 0)
+                    {
+                        <h4 class="title">Başarısız</h4>
+                        <h2 class="sub-title">Başvurunuz alınamadı</h2>
+                        <p>@ViewBag.Result</p>
+                        <a href="@Url.Action("sayfa","anasayfa")" class="btn btn-primary btn-hover-dark rounded-0">Ana Sayfa'ya dönün</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

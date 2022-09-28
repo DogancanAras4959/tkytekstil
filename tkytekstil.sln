@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tkytekstil", "tkytekstil\tkytekstil.csproj", "{9C639CF5-B692-403A-AC95-35D22A462DFD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DOMAIN", "DOMAIN", "{8A30E823-68DF-473A-A5A5-49AA6CF65240}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CORE", "CORE", "{7DC61EDC-1BF3-4967-A6D5-821EDE15CB2A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SERVICES", "SERVICES", "{9671D7ED-C7CE-41D6-A8E6-400F9A22CCE5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tkytekstil.editor", "tkytekstil.editor\tkytekstil.editor.csproj", "{2A476DA8-5459-407A-B743-9EE7B280A56A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tkytekstil.DAL", "tkytekstil.DAL\tkytekstil.DAL.csproj", "{B3D95AD1-EDF9-419A-B06B-8D6FFB65335A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tkytekstil.COMMON", "tkytekstil.COMMON\tkytekstil.COMMON.csproj", "{3C8B07C0-FE81-4944-A12B-BC7D4B9FDC92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tkytekstil.CORE", "tkytekstil.CORE\tkytekstil.CORE.csproj", "{9E23E689-8547-4308-A5B6-CD7975721925}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tkytekstil.ENGINE", "tkytekstil.ENGINE\tkytekstil.ENGINE.csproj", "{537D0154-594C-4030-ACE8-AF83102A36A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C639CF5-B692-403A-AC95-35D22A462DFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C639CF5-B692-403A-AC95-35D22A462DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C639CF5-B692-403A-AC95-35D22A462DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C639CF5-B692-403A-AC95-35D22A462DFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A476DA8-5459-407A-B743-9EE7B280A56A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A476DA8-5459-407A-B743-9EE7B280A56A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A476DA8-5459-407A-B743-9EE7B280A56A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A476DA8-5459-407A-B743-9EE7B280A56A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3D95AD1-EDF9-419A-B06B-8D6FFB65335A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3D95AD1-EDF9-419A-B06B-8D6FFB65335A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3D95AD1-EDF9-419A-B06B-8D6FFB65335A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3D95AD1-EDF9-419A-B06B-8D6FFB65335A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C8B07C0-FE81-4944-A12B-BC7D4B9FDC92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C8B07C0-FE81-4944-A12B-BC7D4B9FDC92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C8B07C0-FE81-4944-A12B-BC7D4B9FDC92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C8B07C0-FE81-4944-A12B-BC7D4B9FDC92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E23E689-8547-4308-A5B6-CD7975721925}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E23E689-8547-4308-A5B6-CD7975721925}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E23E689-8547-4308-A5B6-CD7975721925}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E23E689-8547-4308-A5B6-CD7975721925}.Release|Any CPU.Build.0 = Release|Any CPU
+		{537D0154-594C-4030-ACE8-AF83102A36A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{537D0154-594C-4030-ACE8-AF83102A36A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{537D0154-594C-4030-ACE8-AF83102A36A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{537D0154-594C-4030-ACE8-AF83102A36A9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B3D95AD1-EDF9-419A-B06B-8D6FFB65335A} = {8A30E823-68DF-473A-A5A5-49AA6CF65240}
+		{3C8B07C0-FE81-4944-A12B-BC7D4B9FDC92} = {7DC61EDC-1BF3-4967-A6D5-821EDE15CB2A}
+		{9E23E689-8547-4308-A5B6-CD7975721925} = {7DC61EDC-1BF3-4967-A6D5-821EDE15CB2A}
+		{537D0154-594C-4030-ACE8-AF83102A36A9} = {9671D7ED-C7CE-41D6-A8E6-400F9A22CCE5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {99F92037-F75C-4CDC-921A-90906A0A9629}
+	EndGlobalSection
+EndGlobal

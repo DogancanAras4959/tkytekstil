@@ -1,0 +1,337 @@
+﻿@model tkytekstil.ENGINE.Dtos.ProductData.ProductDto
+@using tkytekstil.ENGINE.Dtos.ImagesProductData
+@using tkytekstil.ENGINE.Dtos.ProductData
+@using tkytekstil.ENGINE.Dtos.SizeNumProductData
+@using tkytekstil.ENGINE.Dtos.ColorProductData
+@using tkytekstil.ENGINE.Dtos.ColorData
+@using tkytekstil.ENGINE.Dtos.ProductFavoriteData
+@using tkytekstil.ENGINE.Dtos.ShoppersData
+
+@using tkytekstil.Core
+@{
+    List<ImagesProductDto> images = ViewBag.Images as List<ImagesProductDto>;
+    List<ProductDto> productsToCategory = ViewBag.ProductsLikesList as List<ProductDto>;
+    List<SizeNumProductDto> sizeProductList = ViewBag.SizeProductList as List<SizeNumProductDto>;
+    List<ColorDto> colorProductList = ViewBag.ColorProductList as List<ColorDto>;
+    ProductFavoriteDto pf = ViewBag.pf as ProductFavoriteDto;
+    ShoppersDto shoppers = SessionExtensionMethod.GetObject<ShoppersDto>(Context.Session, "account");
+}
+@{
+    ViewData["Title"] = "detay";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .active-btn {
+        background: #1665b3 !important;
+        border: 0px;
+        color: #fff;
+        padding: 5px;
+    }
+
+    .checked-input {
+        border: 1px solid #000;
+        -webkit-appearance:checkbox !important;
+        -moz-appearance:checkbox;
+        background-color: #1665b3 !important;
+    }
+
+    input[type=checkbox] {
+        height: 25px;
+        border: 1px solid #000;
+        display: block;
+        width: 25px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -o-appearance: none;
+        appearance: none;
+        outline: none;
+        transition-duration: 0.3s;
+        cursor: pointer;
+    }
+
+</style>
+
+<div class="section">
+
+    <!-- Breadcrumb Area Start -->
+    <div class="breadcrumb-area bg-light">
+        <div class="container-fluid">
+            <div class="breadcrumb-content text-center">
+                <h1 class="title">Ürün Detay</h1>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("sayfa","anasayfa")">Ana Sayfa </a>
+                    </li>
+                    <li class="active">Ürün Detay</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Area End -->
+
+</div>
+
+<div class="section section-margin">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-5 offset-lg-0 col-md-8 offset-md-2 col-custom">
+
+                <!-- Product Details Image Start -->
+                <div class="product-details-img">
+
+                    <!-- Single Product Image Start -->
+                    <div class="single-product-img swiper-container gallery-top">
+                        <div class="swiper-wrapper popup-gallery">
+                            <a class="swiper-slide w-100" href="https://uploads.tkytekstil.com/img/@Model.ProductBaseImage">
+                                <img style="height: 670px; object-fit: cover;" class="w-100" src="https://uploads.tkytekstil.com/img/@Model.ProductBaseImage" alt="Product">
+                            </a>
+                            @foreach (var item in images)
+                            {
+                                <a class="swiper-slide w-100" href="https://uploads.tkytekstil.com/img/@item.Image">
+                                    <img class="w-100" src="https://uploads.tkytekstil.com/img/@item.Image" alt="Product">
+                                </a>
+                            }
+                        </div>
+                    </div>
+                    <!-- Single Product Image End -->
+                    <!-- Single Product Thumb Start -->
+                    <div class="single-product-thumb swiper-container gallery-thumbs">
+                        <div class="swiper-wrapper">
+
+                            @foreach (var item in images)
+                            {
+                                <div class="swiper-slide">
+                                    <img style="height: 145px; object-fit: cover;" src="https://uploads.tkytekstil.com/img//@item.Image" alt="Product">
+                                </div>
+                            }
+
+                        </div>
+
+                        <!-- Next Previous Button Start -->
+                        <div class="swiper-button-next swiper-button-white"><i class="pe-7s-angle-right"></i></div>
+                        <div class="swiper-button-prev swiper-button-white"><i class="pe-7s-angle-left"></i></div>
+                        <!-- Next Previous Button End -->
+
+                    </div>
+                    <!-- Single Product Thumb End -->
+
+                </div>
+                <!-- Product Details Image End -->
+
+            </div>
+            <div class="col-lg-7 col-custom">
+
+                <!-- Product Summery Start -->
+                <div class="product-summery position-relative">
+
+                    <!-- Product Head Start -->
+                    <div class="product-head mb-3">
+                        <h2 class="product-title">@Model.ProductName</h2>
+                    </div>
+
+                    <p class="desc-content mb-5">@Model.ProductSpot</p>
+                    <!-- Description End -->
+
+                    <div class="product-meta mb-3">
+                        <!-- Product Size Start -->
+                        <div class="product-size" id="wrapper">
+                            <span>Beden :</span>
+                            @foreach (var item in sizeProductList)
+                            {
+                                <button value="@item.SizeId" style="background:none; padding:5px; border:0px;" type="submit">@item.size.SizeNumber</button>
+                            }
+                        </div>
+                        <!-- Product Size End -->
+                    </div>
+
+                    <div class="cart-wishlist-btn mb-2">
+                        <span style="padding-right: 15px; position: relative; bottom: 2px; font-weight: 500; font-size: 15px; ">Renk :</span>
+                        <div class="product-color-variation mb-3" id="wrapper-color">
+                            @foreach (var item in colorProductList)
+                            {
+                                <label class="checkbox">
+                                    <input type="checkbox" value="@item.ID" style="background-color: @item.ColorCode;" />
+                                </label>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="cart-wishlist-btn mb">
+                        <div class="quantity mb-5">
+                            <div class="cart-plus-minus">
+                                <input class="cart-plus-minus-box" value="0" id="quantityInput" type="text">
+                                <div class="dec qtybutton"></div>
+                                <div class="inc qtybutton"></div>
+                            </div>
+                        </div>
+                    </div>
+                    @if (shoppers != null)
+                    {
+                        <div class="cart-wishlist-btn mb-4">
+                            <div class="add-to_cart">
+                                <a class="btn btn-outline-dark btn-hover-primary" id="insertCart">Sepete Ekle</a>
+                            </div>
+                            @if (pf != null)
+                            {
+                                <div class="add-to-wishlist">
+                                    <a class="btn btn-danger btn-hover-danger" href="@Url.Action("favorilerdencikar","urun", new { productId = Model.ID })">Favorilerden Çıkar</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="add-to-wishlist">
+                                    <a class="btn btn-outline-dark btn-hover-primary" href="@Url.Action("favorilereekle","urun", new { productId = Model.ID })">Favorilere Ekle</a>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="cart-wishlist-btn mb-2">
+                            <div class="add-to_cart">
+                                <span>Alışveriş gerçekleştirmek için</span>
+                            </div>
+                        </div>
+                        <div class="cart-wishlist-btn mb-4">
+                            <div class="add-to_cart">
+                                <a class="btn btn-outline-dark btn-hover-primary" href="@Url.Action("girisyap","bayi")">Hesabınıza Giriş Yapın</a>
+                            </div>
+                        </div>
+                    }
+
+
+                </div>
+                <!-- Product Summery End -->
+
+            </div>
+            <br />
+            <!-- Products Start -->
+            <div class="row section-padding" style="padding-bottom: 0px;">
+
+                <div class="col-12">
+                    <!-- Section Title Start -->
+                    <div class="section-title aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+                        <h2 class="title pb-3">Benzer Ürünlerimiz</h2>
+                        <span></span>
+                        <div class="title-border-bottom"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach (var item in productsToCategory)
+                    {
+                        <div class="col-sm-3">
+                            <div class="product mb-10" data-aos="fade-up" data-aos-delay="300">
+                                <div class="thumb">
+                                    <a href="@Url.Action("detay","urun", new { Id = item.ID, productname = item.GenerateSlug() })" class="image">
+                                        @foreach (var item2 in images.Where(x => x.ProductId == item.ID).Take(1))
+                                        {
+                                            <img class="second-image" src="https://uploads.tkytekstil.com/img/@item2.Image" alt="Product" />
+                                        }
+                                        <img class="first-image" src="https://uploads.tkytekstil.com/img/@item.ProductBaseImage" style="height: 360px; object-fit: cover;" alt="Product" />
+                                    </a>
+                                    <div class="actions">
+                                        <a href="#" class="action wishlist"><i class="pe-7s-like"></i></a>
+                                        <a href="#" class="action quickview" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"><i class="pe-7s-search"></i></a>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <h4 class="sub-title"><a href="@Url.Action("urunlerimiz","anasayfa", new { categoryId = item.CategoryId })">@item.categoryProduct.CategoryName</a></h4>
+                                    <h5 class="title"><a href="@Url.Action("detay","urun", new { Id = item.ID, productname = item.GenerateSlug() })">@item.ProductName</a></h5>
+                                    @*<span class="price">
+                                            <span class="new">@item.ProductPrice ₺</span>
+                                        </span>*@
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+            <!-- Products End -->
+
+        </div>
+    </div>
+
+</div>
+
+<script src="~/assets/js/vendor/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+
+    var colorId = 0;
+    var sizeId = 0;
+    let prevButton = null;
+    let prevButtonColor = null;
+
+    $("#insertCart").click(function ()
+    {
+        var id = @Model.ID;
+        var adet = Number.parseInt($("#quantityInput").val());
+        console.log("urunId: " + id + ", Adet: " + adet + ", Renk: " +  colorId + ", Beden: " +  sizeId);
+
+        $.ajax({
+            type: 'POST',
+            url: '/urun/addCart/',
+            data: { Id: id, adet: adet, colorId: colorId, sizeId: sizeId },
+            success: function (response) {
+                if (response == true) {
+                      window.location.assign('@Url.Action("sepet", "urun")');
+                }
+            }
+        });
+    })
+
+    // Size Button //
+
+    const wrapper = document.getElementById("wrapper");
+
+    wrapper.addEventListener('click', (e) => {
+
+        const isButton = e.target.nodeName === 'BUTTON';
+
+        if (!isButton) {
+            return;
+        }
+
+        e.target.classList.add('active-btn'); // Add .active CSS Class
+
+        sizeId = e.target.value;
+
+        if (prevButton !== null) {
+            prevButton.classList.remove('active-btn');  // Remove .active CSS Class
+        }
+
+        prevButton = e.target;
+
+    });
+
+     // Size Button //
+
+    // Color Button //
+
+    const wrapperColor = document.getElementById("wrapper-color");
+
+    wrapperColor.addEventListener('click', (ev) =>
+    {
+        const isButtonColor = ev.target.nodeName == "INPUT";
+
+        if (!isButtonColor) {
+            return;
+        }
+
+        ev.target.classList.add('checked-input');
+        colorId = ev.target.value;
+
+        if (prevButtonColor !== null) {
+            prevButtonColor.classList.remove('checked-input');  // Remove .active CSS Class
+        }
+
+        prevButtonColor = ev.target;
+    })
+
+    // Color Button //
+
+</script>

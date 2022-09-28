@@ -1,0 +1,76 @@
+﻿<!-- ========== Left Sidebar Start ========== -->
+<div class="vertical-menu">
+
+    <div data-simplebar class="h-100">
+
+        <!--- Sidemenu -->
+        <div id="sidebar-menu">
+            <!-- Left Menu Start -->
+            <ul class="metismenu list-unstyled" id="side-menu">
+                <li class="menu-title">Kontrol Paneli</li>
+
+                <li>
+                    <a href="@Url.Action("kontrolpaneli", "anasayfa")" class="waves-effect">
+                        <i class="ri-dashboard-fill"></i>
+                        <span>Ana Sayfa</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-store-2-fill"></i>
+                        <span>Ürün Yönetimi</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href=@Url.Action("kategoriler", "urun")>Kategoriler</a></li>
+                        <li><a href=@Url.Action("kategoriekle", "urun")>Kategori Ekle</a></li>
+                        <li><a href=@Url.Action("urunler", "urun")>Ürünler</a></li>
+                        <li><a href=@Url.Action("urunekle", "urun")>Ürün Ekle</a></li>
+                        <li><a href=@Url.Action("urunbilesenleri", "urun")>Ürün Bileşenleri</a></li>
+                        <li><a href=@Url.Action("markalar", "urun")>Markalar</a></li>
+                        <li><a href=@Url.Action("markaekle", "urun")>Marka Ekle</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-building-2-fill"></i>
+                        <span>Bayi</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href=@Url.Action("basvurular", "bayi")>Başvurular</a></li>
+                        <li><a href=@Url.Action("bayiler", "bayi")>Bayiler</a></li>
+                    </ul>
+                </li>
+
+                @*<li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-shopping-bag-2-fill"></i>
+                        <span>Satışlar</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href=@Url.Action("faturalar", "satislar")>Faturalar</a></li>
+                        <li><a href=@Url.Action("siparisler", "satislar")>Siparişler</a></li>
+                    </ul>
+                </li>*@
+
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-settings-2-fill"></i>
+                        <span>Ayarlar</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href=@Url.Action("kullanicilar", "hesap")>Kullanıcılar</a></li>
+                        <li><a href=@Url.Action("roller", "hesap")>Roller</a></li>
+                        <li><a href=@Url.Action("kullanicikayit", "hesap")>Kullanıcı Kayıt</a></li>
+                        <li><a href=@Url.Action("rolkayit", "hesap")>Rol Kayıt</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+        <!-- Sidebar -->
+    </div>
+</div>
+<!-- Left Sidebar End -->

@@ -1,0 +1,195 @@
+﻿@model tkytekstil.ENGINE.Dtos.ShoppersData.ShoppersDto
+
+@{
+    ViewData["Title"] = "basvuruyap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="section">
+
+    <!-- Breadcrumb Area Start -->
+    <div class="breadcrumb-area bg-light">
+        <div class="container-fluid">
+            <div class="breadcrumb-content text-center">
+                <h1 class="title">Kayıt | Başvuru Yap</h1>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("sayfa","anasayfa")">Ana Sayfa </a>
+                    </li>
+                    <li class="active"> Kayıt | Başvuru Yap</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Area End -->
+
+</div>
+<!-- Breadcrumb Section End -->
+<!-- Login | Register Section Start -->
+<div class="section section-margin">
+    <div class="container">
+
+        <div class="row mb-n10">
+            <div class="col-lg-6 col-md-8 m-auto m-lg-0 pb-10">
+                <!-- Login Wrapper Start -->
+                <div class="login-wrapper">
+
+                    <!-- Login Title & Content Start -->
+                    <div class="section-content text-center mb-5">
+                        <h2 class="title mb-2">Giriş Yap</h2>
+                        <p class="desc-content">Kayıtlı bir hesabınız varsa giriş yapın.</p>
+                    </div>
+                    <!-- Login Title & Content End -->
+                    <!-- Form Action Start -->
+                    <form action="@Url.Action("oturumac","bayi")" method="post">
+
+                        <!-- Input Email Start -->
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperUserName" type="text" placeholder="Kullanıcı adınızı giriniz">
+                        </div>
+                        <!-- Input Email End -->
+                        <!-- Input Password Start -->
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperPassword" type="password" placeholder="Şifrenizi giriniz">
+                        </div>
+                        <!-- Input Password End -->
+                        <!-- Checkbox/Forget Password Start -->
+                        <div class="single-input-item mb-1">
+                            <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
+                                <a href="#" class="forget-pwd mb-3">Şifrenizi mi unuttunuz?</a>
+                            </div>
+                        </div>
+                        <!-- Checkbox/Forget Password End -->
+                        <!-- Login Button Start -->
+                        <div class="single-input-item mb-1">
+                            <button class="btn btn btn-dark btn-hover-primary rounded-0">Giriş Yap</button>
+                        </div>
+
+                    </form>
+                    <!-- Form Action End -->
+
+                </div>
+                <!-- Login Wrapper End -->
+            </div>
+            <div class="col-lg-6 col-md-8 m-auto m-lg-0 pb-10">
+                <!-- Register Wrapper Start -->
+                <div class="register-wrapper">
+
+                    <!-- Login Title & Content Start -->
+                    <div class="section-content text-center mb-5">
+                        <h2 class="title mb-2">Başvuru Yapın</h2>
+                        <p class="desc-content">Sitemizdeki ürünlerimize göz atın ve sipariş etmek için önce kayıt olun.</p>
+                    </div>
+                    <form method="post" action="@Url.Action("kayityap","bayi")">
+                        <div class="single-input-item mb-1">
+                            <input asp-for="CompanyName" name="CompanyName" id="CompanyName" type="text" placeholder="Bayi adınızı belirleyiniz">
+                        </div>
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperUserName" name="ShopperUserName" id="ShopperUserName" type="text" placeholder="Kullanıcı adınızı belirleyiniz">
+                        </div>
+
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperPassword" name="ShopperPassword" id="ShopperPassword" type="password" placeholder="Şifre belirleyiniz">
+                        </div>
+
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperName" name="ShopperName" id="ShopperName" type="text" placeholder="Adınız Soyadınız">
+                        </div>
+                        <!-- Input First Name End -->
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperEmail" name="ShopperEmail" id="ShopperEmail" type="email" placeholder="Email Adresiniz">
+                        </div>
+                        <!-- Input Email Or Username Start -->
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperPhone" name="ShopperPhone" id="ShopperPhone" type="tel" placeholder="Telefon Numarası">
+                        </div>
+                        <!-- Input Password Start -->
+                        <div class="single-input-item mb-1">
+                            <textarea asp-for="ShopperAddress" name="ShopperAddress" id="ShopperAddress" class="form-control" rows="3" cols="20" type="text" placeholder="Adresinizi giriniz"></textarea>
+                        </div>
+
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperCity" name="ShopperCity" id="ShopperCity" class="form-control" type="text" placeholder="İl giriniz" />
+                        </div>
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperProvice" name="ShopperProvice" id="ShopperProvice" class="form-control" type="text" placeholder="İlçe giriniz" />
+                        </div>
+                        <div class="single-input-item mb-1">
+                            <button class="btn btn btn-dark btn-hover-primary rounded-0" type="submit">Başvuru Yap</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Register Wrapper End -->
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="~/assets/js/vendor/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+
+    //getIlceler();
+
+    //$("#CityId").change(function () {
+    //    getIlceler();
+    //})
+
+    //function getIlceler() {
+    //    $("#ilceler").html('');
+    //    var sehirID = $("#CityId").val();
+    //    $.ajax({
+    //        url: "/bayi/GetIlcelerBySehirID/" + sehirID,
+    //        type: "GET",
+    //        success: function (data) {
+    //            data.forEach(x => {
+
+    //               let option = '<option value="' + x.ID + '">' + x.ProvinceName + '</option>';
+    //                $("#ilceler").append(option);
+
+    //            })
+    //        },
+    //        error: function (e, j, k) {
+    //            //let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
+    //            //toastr["warning"](responseText, "Uyarı !");
+    //            console.log(e.responseJSON);
+    //        }
+    //    });
+    //}
+
+    //$("#btn_insert").click(function () {
+
+    //    let formData = {
+    //        ShopperUserName: $("#ShopperUserName").val(),
+    //        ShopperPassword: $("#ShopperPassword").val(),
+    //        ShopperName: $("#ShopperName").val(),
+    //        ShopperEmail: $("#ShopperEmail").val(),
+    //        ShopperPhone: $("#ShopperPhone").val(),
+    //        ShopperAddress: $("#ShopperAddress").val(),
+    //        ShopperCity: $("#ShopperCiy").val(),
+    //        ShopperProvice: $("ShopperProvice").val(),
+    //        //CityId: Number.parseInt($("#CityId").val()),
+    //        //ilceler: Number.parseInt($("#ilceler").val())
+    //    };
+
+    //    console.log(formData);
+    //    $.ajax({
+    //        type: "post",
+    //        url: "/bayi/kayityap",
+    //        data: JSON.stringify(formData),
+    //        contentType: "application/json; charset=utf-8",
+    //        success: function (data) {
+    //            /*toastr["success"]("Bilgileri ekleme işlemi başarılı!", "Başarılı");*/
+    //        },
+    //        error: function (e, j, k) {
+    //            //let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
+    //            //toastr["error"](responseText, "Uyarı");
+    //            console.log(e.responseJSON);
+    //        }
+
+    //    });
+    //});
+
+</script>

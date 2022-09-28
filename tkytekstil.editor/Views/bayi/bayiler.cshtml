@@ -1,0 +1,65 @@
+﻿@model IEnumerable<tkytekstil.ENGINE.Dtos.ShoppersData.ShoppersDto>
+@{
+    ViewData["Title"] = "basvurular";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Bayi Adı</th>
+                                <th>Telefon</th>
+                                <th>Mail</th>
+                                <th>Durum</th>
+                                <th>Kayıt Tarihi</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                            <tr>
+                                <th scope="row">@item.ID</th>
+                                <td>@item.ShopperName</td>
+                                <td>@item.ShopperPhone</td>
+                                <td>@item.ShopperEmail</td>
+                                @if (item.IsActive == true)
+                                {
+                                    <td>Aktif</td>
+                                }
+                                else
+                                {
+                                    <td>Pasif</td>
+                                }
+                                <td>@item.CreatedTime.ToString("MM/dd/yyyy HH:mm")</td>
+
+                                <td>
+                                    <a class="btn btn-outline-secondary btn-sm edit" title="Düzenle" href="@Url.Action("bayiduzenle","bayi", new { Id = item.ID })">
+                                        <i class="fas fa-edit" title="Edit"></i>
+                                    </a>
+                                    <a class="btn btn-outline-secondary btn-sm deleted" title="Sil" href="@Url.Action("bayisil","bayi", new { Id = item.ID })">
+                                        <i class="fas fa-trash" title="Delete"></i>
+                                    </a>
+                                    <a class="btn btn-outline-secondary btn-sm edit" title="Düzenle" href="@Url.Action("bayidurumduzenle","bayi", new { Id = item.ID })">
+                                        <i class="fas fa-wifi" title="Edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

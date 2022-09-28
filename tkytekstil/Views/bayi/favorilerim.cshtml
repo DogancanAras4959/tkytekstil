@@ -1,0 +1,90 @@
+﻿@using tkytekstil.ENGINE.Dtos.ImagesProductData
+@using tkytekstil.ENGINE.Dtos.ColorProductData
+@using tkytekstil.ENGINE.Dtos.ProductFavoriteData
+@using tkytekstil.ENGINE.Dtos.ShoppersData
+@using tkytekstil.Core
+
+@{
+    List<ImagesProductDto> imageProductcs = ViewBag.ImageProducts as List<ImagesProductDto>;
+    List<ColorProductDto> colorProducts = ViewBag.ListColorProduct as List<ColorProductDto>;
+    List<ProductFavoriteDto> pfList = ViewBag.pfList as List<ProductFavoriteDto>;
+    ShoppersDto shoppers = SessionExtensionMethod.GetObject<ShoppersDto>(Context.Session, "account");
+
+    ViewData["Title"] = "favorilerim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="section">
+
+    <!-- Breadcrumb Area Start -->
+    <div class="breadcrumb-area bg-light">
+        <div class="container-fluid">
+            <div class="breadcrumb-content text-center">
+                <h1 class="title">Favorilerim</h1>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("sayfa","anasayfa")">Ana Sayfa </a>
+                    </li>
+                    <li class="active"> Favorilerim</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Area End -->
+
+</div>
+
+<div class="section section-padding mt-0" style="padding-top:50px; padding-bottom:25px;">
+    <div class="container">
+        @if (pfList.Count == 0)
+        {
+            <div class="row">
+                <div class="col">
+                    <h4>Bu sayfada henüz bir ürün bulunmuyor! Lütfen bizi takipte kalın.</h4>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col">
+                    <div class="tab-content position-relative">
+                        <div class="tab-pane fade show active" id="tab-product-all">
+                            <div class="row">
+                                @foreach (var item in pfList)
+                                {
+                                    <div class="col-sm-3">
+                                        <div class="product mb-10" data-aos="fade-up" data-aos-delay="300">
+                                            <div class="thumb">
+                                                <a href="@Url.Action("detay","urun", new { Id = item.ProductId, productname = item.product.GenerateSlug() })" class="image">
+                                                    @foreach (var item2 in imageProductcs.Where(x => x.ProductId == item.ID).Take(1))
+                                                    {
+                                                        <img class="second-image" src="https://uploads.tkytekstil.com/img/@item2.Image" alt="Product" />
+                                                    }
+                                                    <img class="first-image" src="https://uploads.tkytekstil.com/img/@item.product.ProductBaseImage" style="height: 360px; object-fit: cover;" alt="Product" />
+                                                </a>
+
+                                            </div>
+                                            <div class="content">
+                                                <h5 class="title"><a href="@Url.Action("detay","urun", new { Id = item.ID, productname = item.product.GenerateSlug() })">@item.product.ProductName</a></h5>
+                                                <div class="product-summery position-relative">
+                                                    <div class="product-color-variation mb-3">
+                                                        @foreach (var item2 in colorProducts.Where(x => x.ProductId == item.ID))
+                                                        {
+                                                            <a href="@Url.Action("urunlerimiz","anasayfa", new { renkFiltre = item2.color.ColorName })" id="@item2.ID" class="btn" style="background-color:@item2.color.ColorCode"></a>
+                                                        }
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,89 @@
+﻿@using tkytekstil.ENGINE.Dtos.OrderData
+
+@{
+    ViewData["Title"] = "siparislerim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<OrderDto> orders = ViewBag.Orders as List<OrderDto>;
+
+}
+
+<div class="section">
+
+    <!-- Breadcrumb Area Start -->
+    <div class="breadcrumb-area bg-light">
+        <div class="container-fluid">
+            <div class="breadcrumb-content text-center">
+                <h1 class="title">Siparişlerim</h1>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("sayfa","anasayfa")">Ana Sayfa </a>
+                    </li>
+                    <li class="active">Siparişlerim</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="section section-margin">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+
+                <!-- Cart Table Start -->
+                <div class="cart-table table-responsive">
+                    <table class="table table-bordered">
+
+                        <!-- Table Head Start -->
+                        <thead>
+                            <tr>
+                                <th class="pro-thumbnail">#</th>
+                                <th class="pro-title">Zaman</th>
+                                <th class="pro-quantity">Durum</th>
+                                <th class="pro-subtotal">Adet</th>
+                                <th class="pro-remove">İşlem</th>
+                            </tr>
+                        </thead>
+                        <!-- Table Head End -->
+                        <tbody>
+                            @if (orders != null)
+                            {
+                                foreach (var item in orders)
+                                {
+                                    <tr>
+                                        <td class="pro-thumbnail"><a href="#">@item.OrderNo</a></td>
+                                        <td class="pro-title">@item.CreatedTime.ToString("dd MMMM, yyyy | HH:mm")</td>
+                                        @if (item.IsDone == false)
+                                        {
+                                            <td class="pro-price"><span>Beklemede</span></td>
+
+                                        }
+                                        else
+                                        {
+                                            <td class="pro-price"><span>Tamamlandı</span></td>
+                                        }
+                                        <td class="pro-price"><span>@item.Quantity</span></td>
+                                        <td class="pro-title"><a href="@Url.Action("urunlerim","bayi", new { Id = item.ID })"><i class="pe-7s-cart"></i></a></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td class="prp-title">Sipariş bulunmuyor!</td></tr>
+                            }
+                        </tbody>
+                        <!-- Table Body End -->
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

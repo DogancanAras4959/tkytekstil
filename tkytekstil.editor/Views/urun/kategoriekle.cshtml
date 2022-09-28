@@ -1,0 +1,58 @@
+﻿@model tkytekstil.ENGINE.Dtos.CategoryData.CategoriesDto
+
+@{
+    ViewData["Title"] = "kategoriekle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-xl-8">
+    <div class="card">
+        <div class="card-body">
+            <form method="post" action="@Url.Action("kategoriolustur","urun")" enctype="multipart/form-data" novalidate="" class="needs-validation">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Dosya Gezgini</h4>
+                                <p class="card-title-desc">Kategoriniz için bir fotoğrafı <em>Seçin…</em> ve diğer form bilgilerini doldurup formu gönderin.</p>
+                                <div class="input-group">
+                                    <input type="file" name="file" class="form-control" id="customFile">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="validationCustom01" class="form-label">Kategori Adı</label>
+                            @Html.TextBoxFor(x => x.CategoryName, new { @class = "form-control", id = "validationCustom01", placeholder = "Kategori adınızı giriniz", @required = "" })
+                            <div class="valid-feedback">
+                                Kategori adı geçerli!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="validationCustom02" class="form-label">Kategori Açıklama</label>
+                            @Html.TextAreaFor(x => x.CategoryDescription, new { @class = "form-control", id = "validationCustom02", placeholder = "Kategori açıklamanızı giriniz", @required = "" })
+                            <div class="valid-feedback">
+                                Kategori açıklaması geçerli!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-check form-switch mb-3" dir="ltr">
+                    @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-input", id = "customSwitch1" })
+                    <label class="form-check-label" for="customSwitch1">Aktif mi?</label>
+                </div>
+                <div>
+                    <button class="btn btn-primary" type="submit">Kategoriyi Oluştur</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- end card -->
+</div>
+
+

@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "sayfa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .section-title .title {
+        font-size: 24px;
+        font-weight: 600;
+        font-family: "Montserrat", sans-serif;
+        margin-bottom: 0;
+        color: #2e2e2e;
+        line-height: 1;
+    }
+</style>
+
+@{await Html.RenderPartialAsync("slider"); }
+
+@*@{await Html.RenderPartialAsync("markalar"); }*@
+
+@{await Html.RenderPartialAsync("campaign"); }
+
+@{await Html.RenderPartialAsync("kategoriler"); }
+
+@{await Html.RenderPartialAsync("urunler"); }
+
+@{await Html.RenderPartialAsync("bannerDiscount"); } 
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12" data-aos="fade-up" data-aos-delay="300">
+                <div class="banner">
+                    <div class="banner-image">
+                        <a href="@Url.Action("urunlerimiz","anasayfa")"><img src="assets/images/banner/big-banner.jpg" alt="Banner"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="section section-padding" style="padding-top: 50px; padding-bottom: 50px;">
+    <div class="container">
+        <div class="feature-wrap">
+            <div class="row row-cols-lg-4 row-cols-xl-auto row-cols-sm-2 row-cols-1 justify-content-between mb-n5">
+                <!-- Feature Start -->
+                <div class="col mb-5" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature">
+                        <div class="icon text-primary align-self-center">
+                            <img src="~/assets/images/icons/feature-icon-2.png" alt="Feature Icon">
+                        </div>
+                        <div class="content">
+                            <h5 class="title">ÜCRETSİZ KARGO</h5>
+                            <p>Siparişlerinizde kargo ücretsiz</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Feature End -->
+                <!-- Feature Start -->
+                <div class="col mb-5" data-aos="fade-up" data-aos-delay="500">
+                    <div class="feature">
+                        <div class="icon text-primary align-self-center">
+                            <img src="~/assets/images/icons/feature-icon-3.png" alt="Feature Icon">
+                        </div>
+                        <div class="content">
+                            <h5 class="title">7/24 DESTEK</h5>
+                            <p>Günün 24 saati destek</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Feature End -->
+                <!-- Feature Start -->
+                <div class="col mb-5" data-aos="fade-up" data-aos-delay="700">
+                    <div class="feature">
+                        <div class="icon text-primary align-self-center">
+                            <img src="~/assets/images/icons/feature-icon-4.png" alt="Feature Icon">
+                        </div>
+                        <div class="content">
+                            <h5 class="title">ÜCRETTE İADE</h5>
+                            <p>5 günde geri iade garantisi</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Feature End -->
+                <!-- Feature Start -->
+                <div class="col mb-5" data-aos="fade-up" data-aos-delay="900">
+                    <div class="feature">
+                        <div class="icon text-primary align-self-center">
+                            <img src="~/assets/images/icons/feature-icon-1.png" alt="Feature Icon">
+                        </div>
+                        <div class="content">
+                            <h5 class="title">SİPARİŞTE İNDİRİM</h5>
+                            <p>Herbir siparişte indirim</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Feature End -->
+            </div>
+        </div>
+    </div>
+</div>
+
+@*@{await Html.RenderPartialAsync("brands"); }*@
+
+<!--Products-->

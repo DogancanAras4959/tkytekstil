@@ -1,0 +1,43 @@
+﻿@model tkytekstil.ENGINE.Dtos.ColorData.ColorDto
+
+<form method="post" action="@Url.Action("renkguncelle","urun")" novalidate="" class="needs-validation">
+    @Html.HiddenFor(x => x.ID)
+    <div class="row">
+        <div class="row mb-2">
+            <label for="validationCustom01" class="form-label">Renk</label>
+            <div class="col-md-2" style="padding-right:5px;">
+                <input type="color" value="@Model.ColorCode" id="colorPickerUpdate" style="height: 40px; padding: 5px;" class="form-control" />
+            </div>
+            <div class="col-md-10" style="padding-left:0px;">
+                @Html.TextBoxFor(x=> x.ColorCode, new { @class="form-control", id="colorValueUpdate", placeholder="Renk Seçiniz...", name="ColorCode" })
+                @*<input type="text" name="ColorCode" class="form-control" id="colorValueUpdate" placeholder="Renk Seçiniz..." />*@
+            </div>
+        </div>
+        <div class="row mb-2">
+            <label for="validationCustom01" class="form-label">Renk Adı</label>
+            <div class="col-md-12">
+                @Html.TextBoxFor(x => x.ColorName, new { @class = "form-control", placeholder = "Renk Adı giriniz...", name = "ColorName" })
+
+                @*<input type="text" name="ColorName" placeholder="Renk Adı giriniz..." class="form-control" />*@
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-primary" type="submit">Renk Güncelle</button>
+    </div>
+</form>
+
+<script>
+
+    //find counter carColorPicker
+    var colorPickerUpdate = document.getElementById('colorPickerUpdate');
+    //add on color change event
+    colorPickerUpdate.addEventListener("change", onColorChanged, false);
+
+    function onColorChanged(event) {
+
+        document.getElementById('colorValueUpdate').value = colorPickerUpdate.value;
+
+    }
+
+</script>

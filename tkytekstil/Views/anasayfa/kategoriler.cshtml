@@ -1,0 +1,58 @@
+﻿@using tkytekstil.ENGINE.Dtos.CategoryData
+@{ 
+    List<CategoriesDto> categories = ViewBag.Categories as List<CategoriesDto>;
+}
+
+<style>
+    .banner .small-banner-content .sub-title {
+        color: #ffffff;
+        font-size: 25px;
+        line-height: 1;
+        font-weight: 600;
+        font-family: "Montserrat", sans-serif;
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="section">
+    <div class="container">
+        <!-- Banners Start -->
+        <div class="row mb-n6">
+
+            @if (categories.Count == 0)
+            {
+                <div class="col-lg-12 col-md-12 col-12 mb-6">
+                    <h4>Ürünlerimize bağlı mevcut bir kategorimiz henüz bulunmuyor! Bizi takipte kalın.</h4>
+                </div>
+            } 
+            else
+            {
+                @foreach (var item in categories)
+                {
+        <div class="col-lg-4 col-md-6 col-12 mb-6">
+            <div class="row">
+                <!-- Tab Start -->
+                <div class="col-12">
+                    <div class="section-title-produt-tab-wrapper" style="margin-bottom:19px;">
+                        <div class="section-title m-0" data-aos="fade-right" data-aos-delay="300">
+                            <h1 style="font-size:25px;" class="title">@item.CategoryName</h1>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tab End -->
+            </div>
+            <div class="banner" data-aos="fade-up" data-aos-delay="300">
+                <div class="banner-image">
+                    <a href="@Url.Action("urunlerimiz","anasayfa", new { categoryId = item.ID })">
+                        <img src="https://uploads.tkytekstil.com/img/@item.CategoryImage" alt="">
+                    </a>
+                </div>
+
+            </div>
+        </div>
+                }
+            }
+        </div>
+        <!-- Banners End -->
+    </div>
+</div>

@@ -1,0 +1,424 @@
+﻿@model tkytekstil.ENGINE.Dtos.ProductData.ProductDto
+@using tkytekstil.ENGINE.Dtos.ImagesProductData
+@using tkytekstil.ENGINE.Dtos.SizeData
+@using tkytekstil.ENGINE.Dtos.SizeNumProductData
+@using tkytekstil.ENGINE.Dtos.ColorData
+@using tkytekstil.ENGINE.Dtos.ColorProductData
+
+@{
+    ViewData["Title"] = "urunduzenle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<ImagesProductDto> images = ViewBag.ImageProducts as List<ImagesProductDto>;
+    List<SizeDto> sizes = ViewBag.Size as List<SizeDto>;
+    List<SizeNumProductDto> sizeNum = ViewBag.SizeNumProduct as List<SizeNumProductDto>;
+    List<ColorDto> colors = ViewBag.Colors as List<ColorDto>;
+    List<ColorProductDto> colorProduct = ViewBag.ColorToProduct as List<ColorProductDto>;
+
+    bool isHave = false;
+}
+
+<style>
+    .avatar-lg {
+        height: 11rem;
+        width: 9rem;
+    }
+
+    input[switch] + label {
+        font-size: 1em;
+        line-height: 1;
+        width: 100px;
+        height: 24px;
+        background-color: #ced4da;
+        background-image: none;
+        border-radius: 2rem;
+        padding: 0.16667rem;
+        cursor: pointer;
+        display: inline-block;
+        text-align: center;
+        position: relative;
+        font-weight: 500;
+        -webkit-transition: all .1s ease-in-out;
+        transition: all .1s ease-in-out;
+    }
+
+    input[switch]:checked + label:after {
+        left: 78px;
+        background-color: #eff2f7;
+    }
+
+    input[switch] + label:before {
+        color: #ffffff;
+        content: attr(data-off-label);
+        display: block;
+        font-family: inherit;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 21px;
+        position: absolute;
+        right: 9px;
+        margin: 3px;
+        top: -2px;
+        text-align: center;
+        min-width: 1.66667rem;
+        overflow: hidden;
+        -webkit-transition: all .1s ease-in-out;
+        transition: all .1s ease-in-out;
+    }
+</style>
+
+<link href="~/assets/libs/dropzone/min/dropzone.min.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title">Fotoğraf Yükleyici</h4>
+                <p class="card-title-desc">
+                    Ürün Fotoğraflarınızı buraya yükleyin
+                </p>
+
+                <div>
+                    <form enctype="multipart/form-data" method="post" action="@Url.Action("fotograflariyukleyin","urun")" class="dropzone">
+                        @Html.HiddenFor(x => x.ID)
+                        <div class="fallback">
+                            <input name="file" type="file" accept="image/*" multiple id="files">
+                        </div>
+                        <div class="dz-message needsclick">
+                            <div class="mb-3">
+                                <i class="display-4 text-muted ri-upload-cloud-2-line"></i>
+                            </div>
+
+                            <h4>Sürükleyip bırakın veya bilgisayardan seçip yükleyin.</h4>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+
+<form method="post" action="@Url.Action("urunguncelle","urun")" enctype="multipart/form-data" novalidate="" class="needs-validation">
+    @Html.HiddenFor(x => x.ID)
+    <div class="row">
+        <div class="col-xl-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Dosya Gezgini</h4>
+                                    <p class="card-title-desc">Ürününüz için bir fotoğrafı <em>Seçin…</em> ve diğer form bilgilerini doldurup formu gönderin.</p>
+                                    <div class="input-group">
+                                        <input type="file" name="file" class="form-control" id="customFile">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="validationCustom01" class="form-label">Ürün Adı</label>
+                                @Html.TextBoxFor(x => x.ProductName, new { @class = "form-control", id = "validationCustom01", placeholder = "Ürün adınızı giriniz", @required = "" })
+                                <div class="valid-feedback">
+                                    Kategori adı geçerli!
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Spot</label>
+                                @Html.TextBoxFor(x => x.ProductSpot, new { @class = "form-control", id = "validationCustom02", placeholder = "Spot giriniz", @required = "" })
+                                <div class="valid-feedback">
+                                    Kategori açıklaması geçerli!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-check form-switch mb-3" dir="ltr">
+                        @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-input", id = "customSwitch1" })
+                        <label class="form-check-label" for="customSwitch1">Aktif mi?</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="validationCustom02" class="form-label">Beden Belirle</label> <a href="@Url.Action("urunduzenle","urun",new { Id = Model.ID })"><i class="fa fa-edit"></i></a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            @foreach (var item in sizes)
+                            {
+                                string formCheck = "formCheck1" + item.ID;
+
+                                foreach (var item2 in sizeNum)
+                                {
+                                    if (item.ID == item2.SizeId)
+                                    {
+                                        isHave = true;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        isHave = false;
+                                    }
+                                }
+
+                                if (isHave == true)
+                                {
+                                    <div class="form-check mb-3" style="float:left; margin-left:25px;">
+                                        <input class="form-check-input" type="checkbox" onchange="removeSize(@item.ID)" id="@formCheck" checked>
+                                        <label class="form-check-label" for="@formCheck">
+                                            @item.SizeNumber
+                                        </label>
+                                    </div>
+                                }
+
+                                else
+                                {
+                                    <div class="form-check mb-3" style="float:left; margin-left:25px;">
+                                        <input class="form-check-input" type="checkbox" onchange="chooseSize(@item.ID)" id="@formCheck">
+                                        <label class="form-check-label" for="@formCheck">
+                                            @item.SizeNumber
+                                        </label>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="validationCustom02" class="form-label">Renkleri Belirle <a href="@Url.Action("urunduzenle","urun",new { Id = Model.ID })"><i class="fa fa-edit"></i></a></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            @foreach (var item in colors)
+                            {
+
+                                string switchName = "switch" + item.ID;
+                                foreach (var item2 in colorProduct)
+                                {
+
+                                    if (item.ID == item2.ColorId)
+                                    {
+                                        isHave = true;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        isHave = false;
+                                    }
+
+                                }
+
+                                if (isHave == true)
+                                {
+                                    <input type="checkbox" id="@switchName" onchange="removeColor(@item.ID)" switch="none" checked />
+                                    <label for="@switchName" data-on-label="@item.ColorName" style="background-color:@item.ColorCode" data-off-label="@item.ColorName"></label>
+                                }
+
+                                else
+                                {
+                                    <input type="checkbox" id="@switchName" onchange="chooseColor(@item.ID)" switch="none" />
+                                    <label for="@switchName" data-on-label="@item.ColorName" style="background-color:#808080; color:#000;" data-off-label="@item.ColorName"></label>
+                                }
+
+
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="validationCustom02" class="form-label">Ürün Fotoğrafları</label>
+                        </div>
+                    </div>
+                    <div class="row mb-3" style="padding-right: 23px;">
+                        @foreach (var item in images)
+                        {
+                            <div class="col-md-3">
+                                <img src="https://uploads.tkytekstil.com/img/@item.Image" style="object-fit: cover; padding: 0px 5px 0px 5px; }" alt="avatar-5" class="rounded avatar-lg">
+                                <div class="form-control" style="width: 147px; border: none;">
+                                    <a href="@Url.Action("fotografisil","urun", new { Id = item.ID })" class="btn btn-danger"><i class="fa fa-trash"></i> Fotoğrafı Sil</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <img id="img" style="width:100%" src="https://uploads.tkytekstil.com/img/@Model.ProductBaseImage" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Adet</label>
+                                @Html.TextBoxFor(x => x.Quantity, new { @class = "form-control", id = "validationCustom02", placeholder = "Adet giriniz", @required = "" })
+                                <div class="valid-feedback">
+                                    Kategori açıklaması geçerli!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="validationCustom01" class="form-label">Kategori</label>
+                                @Html.DropDownListFor(x => x.CategoryId, (SelectList)ViewBag.Category, "Kategori Seçiniz", new { @class = "form-select", id = "validationCustom03", @required = "" })
+                                <div class="valid-feedback">
+                                    Kategori adı geçerli!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="validationCustom01" class="form-label">Marka</label>
+                                @Html.DropDownListFor(x => x.BrandId, (SelectList)ViewBag.Brands, "Marka Seçiniz", new { @class = "form-select", id = "validationCustom03", @required = "" })
+                                <div class="valid-feedback">
+                                    Kategori adı geçerli!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" type="submit">Ürün Güncelle</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end card -->
+
+
+</form>
+
+<script src="~/assets/libs/jquery/jquery.min.js"></script>
+<script src="~/assets/libs/dropzone/min/dropzone.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#customFile').change(function () {
+            var input = this;
+            var url = $(this).val();
+            var ext = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+            if (input.files && input.files[0] && (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg")) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#img').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+            else {
+                $('#img').attr('src', '~/assets/images/img-2.jpg');
+            }
+        });
+
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        Dropzone.options.dropzoneForm = {
+            paramName: "file",
+            maxFilesize: 20,
+            maxFiles: 4,
+            acceptedFiles: "image/*",
+            dictMaxFilesExceeded: "Custom max files msg"
+        }
+    });
+</script>
+
+<script>
+
+    var chooseColor = function (ID) {
+        var colorId = ID
+        var productId = @Model.ID;
+
+        $.ajax({
+              type: "POST",
+              url: "@Url.Action("uruneRenkEkle","urun")",
+              data: { colorId: colorId, productId: productId },
+              success: function (response) {
+                if (response == true) {
+                    alert("Renk ürüne eklendi! Lütfen sayfayı yenileyin");
+                }
+            },
+              dataType: 'json'
+            });
+    }
+
+   var removeColor = function (ID) {
+        var colorId = ID
+        var productId = @Model.ID;
+
+        $.ajax({
+              type: "POST",
+              url: "@Url.Action("urundenRenkSil", "urun")",
+              data: { colorId: colorId, productId: productId },
+              success: function (response) {
+                if (response == true) {
+                    alert("Renk üründen silindi! Lütfen sayfayı yenileyin");
+                }
+            },
+              dataType: 'json'
+            });
+    }
+
+</script>
+
+<script>
+
+    var chooseSize = function (ID) {
+        var sizeId = ID
+        var productId = @Model.ID;
+
+        $.ajax({
+              type: "POST",
+              url: "@Url.Action("uruneBedenEkle", "urun")",
+              data: { sizeId: sizeId, productId: productId },
+              success: function (response) {
+                if (response == true) {
+                    alert("Beden ürüne eklendi! Lütfen sayfayı yenileyin");
+                }
+              },
+              dataType: 'json'
+            });
+    }
+
+   var removeSize = function (ID) {
+        var sizeId = ID
+        var productId = @Model.ID;
+
+        $.ajax({
+              type: "POST",
+              url: "@Url.Action("urundenBedenSil", "urun")",
+              data: { sizeId: sizeId, productId: productId },
+              success: function (response) {
+                if (response == true) {
+                    alert("Beden üründen silindi! Lütfen sayfayı yenileyin");
+                }
+              },
+              dataType: 'json'
+        });
+    }
+
+</script>

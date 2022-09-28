@@ -1,0 +1,84 @@
+﻿@using tkytekstil.ENGINE.Dtos.OrderProductData
+@model tkytekstil.ENGINE.Dtos.OrderData.OrderDto
+
+@{
+    ViewData["Title"] = "urunlerim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    List<OrderProductDto> ordersToProduct = ViewBag.OrdersToProduct as List<OrderProductDto>;
+
+}
+
+<div class="section">
+
+    <!-- Breadcrumb Area Start -->
+    <div class="breadcrumb-area bg-light">
+        <div class="container-fluid">
+            <div class="breadcrumb-content text-center">
+                <h1 class="title">Ürünlerim</h1>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("sayfa","anasayfa")">Ana Sayfa </a>
+                    </li>
+                    <li class="active">@Model.OrderNo Nolu Sipariş</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Area End -->
+
+</div>
+
+<div class="section section-margin">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+
+                <!-- Cart Table Start -->
+                <div class="cart-table table-responsive">
+                    <table class="table table-bordered">
+
+                        <!-- Table Head Start -->
+                        <thead>
+                            <tr>
+                                <th class="pro-thumbnail">#</th>
+                                <th class="pro-title">Ürün</th>
+                                <th class="pro-quantity">Adet</th>
+                                <th class="pro-subtotal">Renk</th>
+                                <th class="pro-subtotal">Beden</th>
+                            </tr>
+                        </thead>
+                        <!-- Table Head End -->
+                        <tbody>
+                            @if (ordersToProduct != null)
+                            {
+                                foreach (var item in ordersToProduct)
+                                {
+                                    <tr>
+                                        <td class="pro-thumbnail"><a href="#"><img style="width:75px; height:75px; object-fit:cover;" src="https://uploads.tkytekstil.com/img/@item.product.ProductBaseImage" /></a></td>
+                                        <td class="pro-thumbnail"><a href="#">@item.product.ProductName</a></td>
+                                        <td class="pro-thumbnail"><a href="#">@item.QuantityItem</a></td>
+                                        <td class="pro-thumbnail"><a href="#">@item.Color</a></td>
+                                        <td class="pro-thumbnail"><a href="#">@item.Size</a></td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td class="prp-title">Ürün bulunmuyor!</td></tr>
+                            }
+                        </tbody>
+                        <!-- Table Body End -->
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+

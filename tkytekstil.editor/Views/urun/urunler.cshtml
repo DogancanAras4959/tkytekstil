@@ -1,0 +1,114 @@
+﻿@using tkytekstil.ENGINE.Dtos.ProductData
+@using tkytekstil.COMMON.Helpers
+@{
+    PaginationList<ProductDto> urunler = ViewBag.Urunler as PaginationList<ProductDto>;
+
+    var prevDisabled = !urunler.HasPrevious ? "disabled" : "";
+    var nextDisabled = !urunler.HasNextPage ? "disabled" : "";
+}
+
+@{
+    ViewData["Title"] = "urunler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>#</th>
+                                <th>Ürün Adı</th>
+                                <th>Adet</th>
+                                <th>Ürünü Tuttur?</th>
+                                <th>Vitrin</th>
+                                <th>Oluşturulma</th>
+                                <th>Durum</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in urunler)
+                            {
+                            <tr>
+                                <th scope="row">@item.ID</th>
+                                <th><img style="height:50px;" src="https://uploads.tkytekstil.com/img/@item.ProductBaseImage" /></th>
+                                <td>@item.ProductName</td>
+                                <td>@item.Quantity</td>
+                                @if (item.SortedRow == false)
+                                {
+                                    <td>Sabit Değil</td>
+                                }
+                                else
+                                {
+                                    <td>Sabit</td>
+                                }
+                                @if (item.Vitrin == false)
+                                {
+                                    <td>Hayır</td>
+                                }
+                                else
+                                {
+                                    <td>Evet</td>
+                                }
+                                <td>@item.CreatedTime.ToString("MM/dd/yyyy HH:mm")</td>
+                                @if (item.IsActive == true)
+                                {
+                                    <td>Aktif</td>
+                                }
+                                else
+                                {
+                                    <td>Pasif</td>
+                                }
+                                <td>
+                                    <a class="btn btn-outline-secondary btn-sm edit" title="Düzenle" href="@Url.Action("urunduzenle","urun", new { Id = item.ID })">
+                                        <i class="fas fa-pencil-alt" title="Edit"></i>
+                                    </a>
+                                    <a class="btn btn-outline-secondary btn-sm deleted" title="Sil" href="@Url.Action("urunsil","urun", new { Id = item.ID })">
+                                        <i class="fas fa-trash" title="Delete"></i>
+                                    </a>
+                                    <a class="btn btn-outline-secondary btn-sm above" title="Aktif/Pasif" href="@Url.Action("urundurumduzenle","urun", new { Id = item.ID })">
+                                        <i class="fas fa-wifi" title="Aktif/Pasif"></i>
+                                    </a>
+                                    <a class="btn btn-outline-secondary btn-sm above" title="Bayi İçin Öner" href="@Url.Action("bayiyeoner","urun", new { Id = item.ID })">
+                                        <i class="fas fa-star" title="Öne Çıkar"></i>
+                                    </a>
+                                    <a class="btn btn-outline-secondary btn-sm above" title="Ürünü Tuttur" href="@Url.Action("urunututtur","urun", new { Id = item.ID })">
+                                        <i class="fas fa-anchor" title="Sabitle"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination" style="float:right">
+                        <li class="page-item">
+                            <a asp-action="urunler" class="btn btn-link">Başa Dön</a>
+                        </li>
+                        <li class="page-item">
+                            <a asp-action="urunler" asp-route-pageNumber="@(urunler.PageIndex-1)" class="btn btn-link @prevDisabled">Önceki</a>
+                        </li>
+                        <li class="page-item">
+                            <a asp-action="urunler" asp-route-pageNumber="@(urunler.PageIndex+1)" class="btn btn-link @nextDisabled">Sonraki</a>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

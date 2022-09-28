@@ -1,0 +1,96 @@
+﻿@using tkytekstil.Models
+@using tkytekstil.ENGINE.Dtos.ShoppersData
+@using tkytekstil.Core
+
+@{
+    ViewData["Title"] = "sepet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ShoppersDto shopper = SessionExtensionMethod.GetObject<ShoppersDto>(Context.Session, "account") as ShoppersDto;
+    List<CartItems> cartItems = ViewBag.Cart as List<CartItems>;
+
+}
+
+<div class="section">
+
+    <!-- Breadcrumb Area Start -->
+    <div class="breadcrumb-area bg-light">
+        <div class="container-fluid">
+            <div class="breadcrumb-content text-center">
+                <h1 class="title">Sepet</h1>
+                <ul>
+                    <li>
+                        <a href="@Url.Action("sayfa","anasayfa")">Ana Sayfa </a>
+                    </li>
+                    <li class="active">Sepet</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Area End -->
+
+</div>
+
+<div class="section section-margin">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-12">
+
+                <!-- Cart Table Start -->
+                <div class="cart-table table-responsive">
+                    <table class="table table-bordered">
+
+                        <!-- Table Head Start -->
+                        <thead>
+                            <tr>
+                                <th class="pro-thumbnail">#</th>
+                                <th class="pro-title">Ürün</th>
+                                <th class="pro-quantity">Renk</th>
+                                <th class="pro-quantity">Beden</th>
+                                <th class="pro-subtotal">Adet</th>
+                                <th class="pro-remove">İşlem</th>
+                            </tr>
+                        </thead>
+                        <!-- Table Head End -->
+                        <tbody>
+                            @if (cartItems != null)
+                            {
+                                foreach (var item in cartItems)
+                                {
+                            <tr>
+                                <td class="pro-thumbnail"><a href="#"><img style="width:90px; height:90px; object-fit:cover;" class="img-fluid" src="https://uploads.tkytekstil.com/img/@item.products.ProductBaseImage" alt="Product" /></a></td>
+                                <td class="pro-title"><a href="#">@item.products.ProductName</a></td>
+                                <td class="pro-price"><span>@item.Color</span></td>
+                                <td class="pro-price"><span>@item.Size</span></td>
+                                <td class="pro-price"><span>@item.Quantity</span></td>
+                                <td class="pro-remove"><a href="@Url.Action("remove","urun", new { Id = item.products.ID })"><i class="pe-7s-trash"></i></a></td>
+                            </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr><td class="prp-title">Sepetinizde ürün bulunmuyor!</td></tr>
+                            }
+                        </tbody>
+                        <!-- Table Body End -->
+
+                    </table>
+                </div>
+                <!-- Cart Table End -->
+                <!-- Cart Update Option Start -->
+                <div class="cart-update-option d-block d-md-flex justify-content-between" style="float:right;">
+
+                    <div class="cart-update mt-sm-16">
+                        <a href="@Url.Action("siparis","urun")" class="btn btn-dark btn-hover-primary rounded-0">Siparişi Tamamla</a>
+                    </div>
+
+                </div>
+                <!-- Cart Update Option End -->
+
+            </div>
+        </div>
+
+    </div>
+</div>
+

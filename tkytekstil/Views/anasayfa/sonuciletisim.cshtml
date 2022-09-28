@@ -1,0 +1,81 @@
+﻿
+@{
+    ViewData["Title"] = "sonuc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .error_form .title {
+        font-size: 60px;
+        font-weight: 700;
+        color: #ff4545;
+        letter-spacing: 1px;
+        line-height: .73;
+        margin: 0px 0 23px;
+    }
+
+    .error_form .sub-title {
+        font-size: 24px;
+        text-transform: none;
+        font-weight: 500;
+        line-height: 1;
+        margin-bottom: 14px;
+    }
+
+    .error_form p {
+        font-size: 17px;
+        font-weight: 400;
+        margin-bottom: 22px;
+    }
+</style>
+
+<div class="section">
+
+    <!-- Breadcrumb Area Start -->
+    <div class="breadcrumb-area bg-light">
+        <div class="container-fluid">
+            <div class="breadcrumb-content text-center">
+                <h1 class="title">Sonuç</h1>
+                <ul>
+                    <li>
+                        <a href="index.html">Ana Sayfa </a>
+                    </li>
+                    <li class="active"> Sonuç</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb Area End -->
+
+</div>
+<!-- Breadcrumb Section End -->
+<!-- 404 Error Section Start -->
+<div class="section section-margin">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="error_form">
+                    @if (ViewBag.Type == 0)
+                    {
+                        <h1 class="title text-danger">Başarısız!</h1>
+                        <h2 class="sub-title">Bir hata oluştu</h2>
+                        <p>Form gönderilirken bir hata oluştu. <br> Lütfen tekrar deneyiniz.</p>
+                        <a href="@Url.Action("sayfa","anasayfa")" class="btn btn-primary btn-hover-dark rounded-0">Ana Sayfaya Dön</a>
+                    }
+
+                    else if (ViewBag.Type == 1)
+                    {
+                        <h1 class="title text-success">Başarılı!</h1>
+                        <h2 class="sub-title">Form alındı.</h2>
+                        <p>İletişim formunuzu aldık. Sizinle en kısa sürede <br> iletişime geçeceğiz!</p>
+                        <a href="@Url.Action("sayfa","anasayfa")" class="btn btn-primary btn-hover-dark rounded-0">Ana Sayfaya Dön</a>
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

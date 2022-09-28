@@ -1,0 +1,37 @@
+﻿@using tkytekstil.ENGINE.Dtos.BrandData
+@{
+    List<BrandDto> brands = ViewBag.ListBrand as List<BrandDto>;
+}
+
+<div class="section">
+    <div class="container">
+
+        <!-- Banners Start -->
+        <div class="row mb-n6 overflow-hidden">
+            <!-- Banner Start -->
+
+            @if (brands.Count == 0)
+            {
+                <div class="col-md-12 col-12 mb-6">
+                    <h4>Ürünlere bağlı henüz bir marka bulunmuyor! Bizi takipte kalın.</h4>
+                </div>
+            }
+            else
+            {
+                foreach (var item in brands)
+                {
+                    <div class="col-md-6 col-12 mb-6" data-aos="fade-right" data-aos-delay="300">
+                        <div class="banner">
+                            <div class="banner-image">
+                                <a href="@Url.Action("urunlerimiz","anasayfa", new { brandId = item.ID })"><img style="height: 150px; object-fit: cover;" src="https://uploads.tkytekstil.com/img/@item.BrandImage" alt="Banner Image"></a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+         
+        </div>
+        <!-- Banners End -->
+    </div>
+</div>
+<!--Marka-->
