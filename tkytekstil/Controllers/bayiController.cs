@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using tkytekstil.COMMON.Helpers.Cyroptography;
 using tkytekstil.Core;
@@ -16,6 +18,7 @@ using tkytekstil.ENGINE.Dtos.ColorProductData;
 using tkytekstil.ENGINE.Dtos.ContactDataData;
 using tkytekstil.ENGINE.Dtos.ImagesProductData;
 using tkytekstil.ENGINE.Dtos.OrderData;
+using tkytekstil.ENGINE.Dtos.OrderProductData;
 using tkytekstil.ENGINE.Dtos.ProductData;
 using tkytekstil.ENGINE.Dtos.ProductFavoriteData;
 using tkytekstil.ENGINE.Dtos.ProvinceData;
@@ -66,16 +69,18 @@ namespace tkytekstil.Controllers
         #endregion
 
         [Route("hesabim")]
-        public IActionResult hesabim()
+        public IActionResult hesabim(int Id)
         {
-            ShoppersDto shopper = SessionExtensionMethod.GetObject<ShoppersDto>(HttpContext.Session, "account");
+            TempData["FooterHave"] = 1;
             List<BrandDto> brands = _brandService.GetAll();
             ViewBag.ListBrand = brands;
-            if (shopper != null)
+            if (Id > 0)
             {
-                List<OrderDto> orders = _orderService.ordersToShopper(shopper.ID);
+                List<OrderDto> orders = _orderService.ordersToShopper(Id);
                 ViewBag.Orders = orders;
-                return View();
+
+                var shopper = _shopperService.Get(Id);
+                return View(shopper);
             }
             else
             {
@@ -86,6 +91,7 @@ namespace tkytekstil.Controllers
         [Route("basvuruyap")]
         public IActionResult basvuruyap()
         {
+            TempData["FooterHave"] = 1;
             List<BrandDto> brands = _brandService.GetAll();
             ViewBag.ListBrand = brands;
             var cities = _cityService.GetAll();
@@ -94,14 +100,14 @@ namespace tkytekstil.Controllers
         }
 
         [Route("siparislerim")]
-        public IActionResult siparislerim()
+        public IActionResult siparislerim(int Id)
         {
-            ShoppersDto shopper = SessionExtensionMethod.GetObject<ShoppersDto>(HttpContext.Session, "account");
+            TempData["FooterHave"] = 1;
             List<BrandDto> brands = _brandService.GetAll();
             ViewBag.ListBrand = brands;
-            if (shopper != null)
+            if (Id > 0)
             {
-                List<OrderDto> orders = _orderService.ordersToShopper(shopper.ID);
+                List<OrderDto> orders = _orderService.ordersToShopper(Id);
                 ViewBag.Orders = orders;
                 return View();
             }
@@ -114,38 +120,32 @@ namespace tkytekstil.Controllers
         [Route("urunlerim")]
         public IActionResult urunlerim(int Id)
         {
+            TempData["FooterHave"] = 1;
             List<BrandDto> brands = _brandService.GetAll();
             ViewBag.ListBrand = brands;
+
+            OrderDto orders = _orderService.Get(Id);
+
             if (Id == 0)
             {
                 return RedirectToAction("siparislerim", "bayi");
             }
             else
             {
-                ShoppersDto shopper = SessionExtensionMethod.GetObject<ShoppersDto>(HttpContext.Session, "account");
-
-                if (shopper != null)
-                {
-                    var order = _orderService.Get(Id);
-                    var productsToOrder = _orderProductService.orderToProducts(Id);
-                    ViewBag.OrdersToProduct = productsToOrder;
-                    return View(order);
-                }
-                else
-                {
-                    return RedirectToAction("girisyap", "bayi");
-                }
+                List<OrderProductsDto> ordersDto = _orderProductService.orderToProducts(Id);
+                ViewBag.OrdersProduct = ordersDto;
+                return View(orders);
             }
 
         }
 
         [Route("favorilerim")]
-        public IActionResult favorilerim()
+        public IActionResult favorilerim(int Id)
         {
-            ShoppersDto shopper = SessionExtensionMethod.GetObject<ShoppersDto>(HttpContext.Session, "account");
+            TempData["FooterHave"] = 1;
             List<BrandDto> brands = _brandService.GetAll();
             ViewBag.ListBrand = brands;
-            if (shopper != null)
+            if (Id > 0)
             {
                 List<ImagesProductDto> colorProducts = _imageProductService.GetAll();
                 ViewBag.ImageProducts = colorProducts;
@@ -173,6 +173,7 @@ namespace tkytekstil.Controllers
         [Route("girisyap")]
         public IActionResult girisyap()
         {
+            TempData["FooterHave"] = 1;
             List<BrandDto> brands = _brandService.GetAll();
             ViewBag.ListBrand = brands;
             return View();
@@ -190,17 +191,29 @@ namespace tkytekstil.Controllers
 
                     if (result != false)
                     {
-                        var geShopper = _shopperService.getShopper(model.ShopperUserName);
+                        var getShopper = _shopperService.getShopper(model.ShopperUserName);
 
-                        var settings = new Newtonsoft.Json.JsonSerializerSettings();
-                        settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                        var userClaims = new List<Claim>()
+                        {
+                            new Claim("Name",getShopper.ShopperName),
+                            new Claim("UserEmail",getShopper.ShopperEmail),
+                            new Claim("UserId", getShopper.ID.ToString()),
+                            new Claim(ClaimTypes.Name,getShopper.ShopperName),
+                            new Claim(ClaimTypes.NameIdentifier, getShopper.ID.ToString()),
+                        };
 
-                        string data = JsonConvert.SerializeObject(geShopper, settings);
-                        var deSerilizeData = JsonConvert.DeserializeObject(data).ToString();
-                        var resultConvert = JsonConvert.DeserializeObject<ShoppersDto>(deSerilizeData);
-                        SessionExtensionMethod.SetObject(HttpContext.Session, "account", resultConvert);
+                        var userIdentity = new ClaimsIdentity(userClaims, "User Identity");
+                        var userPrincipal = new ClaimsPrincipal(new[] { userIdentity });
 
-                        return RedirectToAction("hesabim", "bayi");
+                        HttpContext.SignInAsync(
+                            userPrincipal,
+                            new AuthenticationProperties
+                            {
+                                IsPersistent = model.RememberMe,
+                                ExpiresUtc = DateTime.UtcNow.AddYears(15)
+                            });
+
+                        return Redirect("/anasayfa");
                     }
                     else
                     {
@@ -248,7 +261,7 @@ namespace tkytekstil.Controllers
                     City = shopper.ShopperCity,
                     Province = shopper.ShopperProvice,
                     Email = shopper.ShopperEmail,
-                    Subject = shopper.ShopperName +" müşteri kaydı gerçekleştirdi",
+                    Subject = shopper.ShopperName + " müşteri kaydı gerçekleştirdi",
                     Phone = shopper.ShopperPhone,
                     To = "siparis@tkytekstil.com",
                     Body = await _viewRenderService.RenderToString($"/Views/bayi/email_appoinment_register.cshtml", shopper),
@@ -287,6 +300,7 @@ namespace tkytekstil.Controllers
 
         public IActionResult kayitsonuc(string result, int type)
         {
+            TempData["FooterHave"] = 1;
             ViewBag.Type = type;
             ViewBag.Result = result; List<BrandDto> brands = _brandService.GetAll();
             ViewBag.ListBrand = brands;
@@ -297,9 +311,8 @@ namespace tkytekstil.Controllers
 
         public IActionResult cikisyap()
         {
-            HttpContext.Session.Remove("cart");
-            HttpContext.Session.Clear();
-            return RedirectToAction("sayfa", "anasayfa");
+            HttpContext.SignOutAsync();
+            return Redirect("/anasayfa");
         }
 
         #region Extends

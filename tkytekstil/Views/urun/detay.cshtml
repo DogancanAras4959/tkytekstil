@@ -14,7 +14,7 @@
     List<SizeNumProductDto> sizeProductList = ViewBag.SizeProductList as List<SizeNumProductDto>;
     List<ColorDto> colorProductList = ViewBag.ColorProductList as List<ColorDto>;
     ProductFavoriteDto pf = ViewBag.pf as ProductFavoriteDto;
-    ShoppersDto shoppers = SessionExtensionMethod.GetObject<ShoppersDto>(Context.Session, "account");
+    ShoppersDto shoppers = ViewBag.Shopper as ShoppersDto;
 }
 @{
     ViewData["Title"] = "detay";
@@ -133,18 +133,20 @@
 
                     <p class="desc-content mb-5">@Model.ProductSpot</p>
                     <!-- Description End -->
-
-                    <div class="product-meta mb-3">
-                        <!-- Product Size Start -->
-                        <div class="product-size" id="wrapper">
-                            <span>Beden :</span>
-                            @foreach (var item in sizeProductList)
-                            {
-                                <button value="@item.SizeId" style="background:none; padding:5px; border:0px;" type="submit">@item.size.SizeNumber</button>
-                            }
+                    @if (Model.ChooseSizeIsHave == true)
+                    {
+                        <div class="product-meta mb-3">
+                            <!-- Product Size Start -->
+                            <div class="product-size" id="wrapper">
+                                <span>Beden :</span>
+                                @foreach (var item in sizeProductList)
+                                {
+                                    <button value="@item.SizeId" style="background:none; padding:5px; border:0px;" type="submit">@item.size.SizeNumber</button>
+                                }
+                            </div>
+                            <!-- Product Size End -->
                         </div>
-                        <!-- Product Size End -->
-                    </div>
+                    }
 
                     <div class="cart-wishlist-btn mb-2">
                         <span style="padding-right: 15px; position: relative; bottom: 2px; font-weight: 500; font-size: 15px; ">Renk :</span>
@@ -288,25 +290,29 @@
 
     const wrapper = document.getElementById("wrapper");
 
-    wrapper.addEventListener('click', (e) => {
+    if (wrapper != null) {
 
-        const isButton = e.target.nodeName === 'BUTTON';
+        wrapper.addEventListener('click', (e) => {
 
-        if (!isButton) {
-            return;
-        }
+            const isButton = e.target.nodeName === 'BUTTON';
 
-        e.target.classList.add('active-btn'); // Add .active CSS Class
+            if (!isButton) {
+                return;
+            }
 
-        sizeId = e.target.value;
+            e.target.classList.add('active-btn'); // Add .active CSS Class
 
-        if (prevButton !== null) {
-            prevButton.classList.remove('active-btn');  // Remove .active CSS Class
-        }
+            sizeId = e.target.value;
 
-        prevButton = e.target;
+            if (prevButton !== null) {
+                prevButton.classList.remove('active-btn');  // Remove .active CSS Class
+            }
 
-    });
+            prevButton = e.target;
+
+        });
+
+    }
 
      // Size Button //
 

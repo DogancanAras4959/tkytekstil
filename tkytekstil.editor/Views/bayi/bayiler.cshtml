@@ -31,24 +31,35 @@
                                 <td>@item.ShopperEmail</td>
                                 @if (item.IsActive == true)
                                 {
-                                    <td>Aktif</td>
+                                    <td><span class="text-success" style="font-weight:bold;">Aktif</span></td>
                                 }
                                 else
                                 {
-                                    <td>Pasif</td>
+                                    <td><span class="text-danger" style="font-weight:bold;">Pasif</span></td>
                                 }
                                 <td>@item.CreatedTime.ToString("MM/dd/yyyy HH:mm")</td>
 
                                 <td>
                                     <a class="btn btn-outline-secondary btn-sm edit" title="Düzenle" href="@Url.Action("bayiduzenle","bayi", new { Id = item.ID })">
-                                        <i class="fas fa-edit" title="Edit"></i>
+                                        <i class="fas fa-edit" title="Düzenle"></i>
                                     </a>
                                     <a class="btn btn-outline-secondary btn-sm deleted" title="Sil" href="@Url.Action("bayisil","bayi", new { Id = item.ID })">
-                                        <i class="fas fa-trash" title="Delete"></i>
+                                        <i class="fas fa-trash" title="Sil"></i>
                                     </a>
-                                    <a class="btn btn-outline-secondary btn-sm edit" title="Düzenle" href="@Url.Action("bayidurumduzenle","bayi", new { Id = item.ID })">
-                                        <i class="fas fa-wifi" title="Edit"></i>
-                                    </a>
+
+                                    @if (item.IsActive == true)
+                                    {
+                                        <a class="btn btn-outline-secondary btn-sm edit" title="Düzenle" href="@Url.Action("bayidurumduzenle", "bayi", new { Id = item.ID })">
+                                            <i class="fas fa-ban" title="Aktif / Pasif"></i>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-outline-secondary btn-sm edit" title="Düzenle" href="@Url.Action("bayidurumduzenle", "bayi", new { Id = item.ID })">
+                                            <i class="fas fa-check-circle" title="Aktif / Pasif"></i>
+                                        </a>
+                                    }
+
                                 </td>
                             </tr>
                             }

@@ -7,8 +7,8 @@
     ViewData["Title"] = "siparis";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    List<CartItems> cartItems = SessionExtensionMethod.GetObject<List<CartItems>>(Context.Session, "cart");
-    ShoppersDto shopper = SessionExtensionMethod.GetObject<ShoppersDto>(Context.Session, "account"); 
+    ShoppersDto shopper = ViewBag.Shopper as ShoppersDto;
+    List<CartItems> cartItems = ViewBag.Cart as List<CartItems>;
 
 }
 

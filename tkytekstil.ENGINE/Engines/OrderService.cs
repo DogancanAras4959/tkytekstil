@@ -34,5 +34,19 @@ namespace tkytekstil.ENGINE.Engines
             var entityDto = _mapper.Map<List<Order>, List<OrderDto>>(entity);
             return entityDto;
         }
+
+        public List<OrderDto> ordersByShopper()
+        {
+            var entity = _repository.Where(x => x.Id > 0).Include("shopper").ToList();
+            var entityDto = _mapper.Map<List<Order>, List<OrderDto>>(entity);
+            return entityDto;
+        }
+
+        public List<OrderDto> ordersByCompletedShopper()
+        {
+            var entity = _repository.Where(x => x.Id > 0).Include("shopper").ToList();
+            var entityDto = _mapper.Map<List<Order>, List<OrderDto>>(entity);
+            return entityDto;
+        }
     }
 }

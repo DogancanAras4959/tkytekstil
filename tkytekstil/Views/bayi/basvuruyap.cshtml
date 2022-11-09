@@ -55,10 +55,13 @@
                         </div>
                         <!-- Input Password End -->
                         <!-- Checkbox/Forget Password Start -->
+                        @*<div class="single-input-item mb-1">
+            <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
+                <a href="#" class="forget-pwd mb-3">Şifrenizi mi unuttunuz?</a>
+            </div>
+        </div>*@
                         <div class="single-input-item mb-1">
-                            <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
-                                <a href="#" class="forget-pwd mb-3">Şifrenizi mi unuttunuz?</a>
-                            </div>
+                                <input id="RememberMe" name="RememberMe" type="checkbox"> Beni Hatırla
                         </div>
                         <!-- Checkbox/Forget Password End -->
                         <!-- Login Button Start -->
@@ -105,7 +108,7 @@
                             <input asp-for="ShopperPhone" name="ShopperPhone" id="ShopperPhone" type="tel" placeholder="Telefon Numarası">
                         </div>
                         <!-- Input Password Start -->
-                        <div class="single-input-item mb-1">
+                        <div class="single-input-item mb-3">
                             <textarea asp-for="ShopperAddress" name="ShopperAddress" id="ShopperAddress" class="form-control" rows="3" cols="20" type="text" placeholder="Adresinizi giriniz"></textarea>
                         </div>
 

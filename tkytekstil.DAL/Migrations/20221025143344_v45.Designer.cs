@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tkytekstil.DAL;
 
 namespace tkytekstil.DAL.Migrations
 {
     [DbContext(typeof(tkytekstildbcontext))]
-    partial class tkytekstildbcontextModelSnapshot : ModelSnapshot
+    [Migration("20221025143344_v45")]
+    partial class v45
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

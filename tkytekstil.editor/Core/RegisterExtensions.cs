@@ -50,6 +50,8 @@ namespace tkytekstil.editor.Core
             services.AddTransient<IColorProductService, ColorProductService>();
             services.AddTransient<IViewRenderService, ViewRenderService>();
             services.AddTransient<IContactDataService, ContactDataService>();
+            services.AddTransient<IOrderService, OrderService>();
+            services.AddTransient<IOrderProductsService, OrderProductService>();
         }
     }
 }

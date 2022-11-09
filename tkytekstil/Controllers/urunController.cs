@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using tkytekstil.Core;
@@ -18,6 +19,7 @@ using tkytekstil.ENGINE.Dtos.OrderProductData;
 using tkytekstil.ENGINE.Dtos.ProductData;
 using tkytekstil.ENGINE.Dtos.ProductFavoriteData;
 using tkytekstil.ENGINE.Dtos.ShoppersData;
+using tkytekstil.ENGINE.Dtos.SizeData;
 using tkytekstil.ENGINE.Interface;
 using tkytekstil.Models;
 
@@ -40,8 +42,9 @@ namespace tkytekstil.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IViewRenderService _viewRenderService;
         private readonly ISizeNumService _sizeNumService;
+        private readonly IShoppersService _shopperservice;
 
-        public urunController(IProductService productService, IImageProductService imageProductService, ISizeNumberProductService sizeNumberProductService, IColorProductService colorProductService, IColorService colorService, IProductFavoriteService productFavoriteService, IOrderService orderService, IOrderProductsService orderProductService, IContactDataService contactDataService, IWebHostEnvironment webHostEnvironment, IViewRenderService viewRenderService, ISizeNumService sizeNumService)
+        public urunController(IProductService productService, IImageProductService imageProductService, ISizeNumberProductService sizeNumberProductService, IColorProductService colorProductService, IColorService colorService, IProductFavoriteService productFavoriteService, IOrderService orderService, IOrderProductsService orderProductService, IContactDataService contactDataService, IWebHostEnvironment webHostEnvironment, IViewRenderService viewRenderService, ISizeNumService sizeNumService, IShoppersService shopperService)
         {
             _productService = productService;
             _imageProductService = imageProductService;
@@ -55,6 +58,7 @@ namespace tkytekstil.Controllers
             _webHostEnvironment = webHostEnvironment;
             _viewRenderService = viewRenderService;
             _sizeNumService = sizeNumService;
+            _shopperservice = shopperService;
         }
 
         #endregion
@@ -63,11 +67,18 @@ namespace tkytekstil.Controllers
         [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult detay(int Id, string productname)
         {
+            TempData["FooterHave"] = 1;
             var value = _productService.getProduct(Id);
             string name = productname;
 
-            ShoppersDto shopper = SessionExtensionMethod.GetObject<ShoppersDto>(HttpContext.Session, "account");
-          
+            var isAuthenticated = User.Identity.IsAuthenticated;
+            ShoppersDto shopper = null;
+
+            if (isAuthenticated)
+            {
+                shopper = _shopperservice.Get(Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+            }
+
             if (shopper != null)
             {
                 var pf = _productFavoriteService.getFavorite(value.ID, shopper.ID);
@@ -81,6 +92,7 @@ namespace tkytekstil.Controllers
             ViewBag.Images = _imageProductService.getToIntProduct(value.ID);
             ViewBag.ProductsLikesList = _productService.productListToCategoryId(value.CategoryId);
             ViewBag.SizeProductList = _sizeNumberProductService.listSizeNumProductToProduct(value.ID);
+            ViewBag.Shopper = shopper;
 
             List<ColorProductDto> colorProducts = _colorProductService.colorToProductId(value.ID);
             List<ColorDto> newColors = new List<ColorDto>();
@@ -124,10 +136,17 @@ namespace tkytekstil.Controllers
             return View(value);
         }
 
-        public IActionResult favorilereekle(int productId) 
+        public IActionResult favorilereekle(int productId)
         {
             var product = _productService.Get(productId);
-            ShoppersDto bayi = SessionExtensionMethod.GetObject<ShoppersDto>(HttpContext.Session, "account");
+
+            var isAuthenticated = User.Identity.IsAuthenticated;
+            ShoppersDto bayi = null;
+
+            if (isAuthenticated)
+            {
+                bayi = _shopperservice.Get(Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+            }
 
             if (bayi != null)
             {
@@ -152,7 +171,15 @@ namespace tkytekstil.Controllers
         public IActionResult favorilerdencikar(int productId)
         {
             var product = _productService.Get(productId);
-            ShoppersDto bayi = SessionExtensionMethod.GetObject<ShoppersDto>(HttpContext.Session, "account");
+
+            var isAuthenticated = User.Identity.IsAuthenticated;
+            ShoppersDto bayi = null;
+
+            if (isAuthenticated)
+            {
+                bayi = _shopperservice.Get(Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+            }
+
             _productFavoriteService.deleteToFavorite(product.ID, bayi.ID);
             return RedirectToAction("detay", "urun", new { Id = productId, productName = product.GenerateSlug() });
         }
@@ -163,6 +190,7 @@ namespace tkytekstil.Controllers
         [Route("sepet")]
         public IActionResult sepet()
         {
+            TempData["FooterHave"] = 1;
             var cart = SessionExtensionMethod.GetObject<List<CartItems>>(HttpContext.Session, "cart");
             ViewBag.Cart = cart;
             //ViewBag.CartTotal = cart.Sum(x => x.products.ProductPrice * x.products.Quantity);
@@ -173,7 +201,20 @@ namespace tkytekstil.Controllers
         [Route("siparis")]
         public IActionResult siparis()
         {
-            //ViewBag.CartTotal = cart.Sum(x => x.products.ProductPrice * x.products.Quantity);
+            TempData["FooterHave"] = 1;
+            var isAuthenticated = User.Identity.IsAuthenticated;
+            ShoppersDto bayi = null;
+
+            if (isAuthenticated)
+            {
+                bayi = _shopperservice.Get(Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+            }
+
+            ViewBag.Shopper = bayi;
+
+            var cart = SessionExtensionMethod.GetObject<List<CartItems>>(HttpContext.Session, "cart");
+            ViewBag.Cart = cart;
+
             return View();
         }
 
@@ -181,7 +222,14 @@ namespace tkytekstil.Controllers
         {
             try
             {
-                var shopper = SessionExtensionMethod.GetObject<ShoppersDto>(HttpContext.Session, "account");
+                var isAuthenticated = User.Identity.IsAuthenticated;
+                ShoppersDto shopper = null;
+
+                if (isAuthenticated)
+                {
+                    shopper = _shopperservice.Get(Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+                }
+
                 var cart = SessionExtensionMethod.GetObject<List<CartItems>>(HttpContext.Session, "cart");
 
                 Random r = new Random();
@@ -203,7 +251,7 @@ namespace tkytekstil.Controllers
                     foreach (var item in cart)
                     {
 
-                        OrderProductDto newOrderProduct = new OrderProductDto()
+                        OrderProductsDto newOrderProduct = new OrderProductsDto()
                         {
                             OrderId = result,
                             CreatedTime = DateTime.Now,
@@ -286,6 +334,9 @@ namespace tkytekstil.Controllers
             }
             catch (Exception ex)
             {
+                HttpContext.Session.Remove("cart");
+                HttpContext.Session.Clear();
+
                 return RedirectToAction("sonuc", "urun");
             }
            
@@ -295,6 +346,7 @@ namespace tkytekstil.Controllers
         [Route("sonuc")]
         public IActionResult sonuc()
         {
+            TempData["FooterHave"] = 0;
             return View();
         }
     
@@ -315,16 +367,32 @@ namespace tkytekstil.Controllers
         {
 
             var colorGet = _colorService.Get(colorId);
-            var size = _sizeNumService.Get(sizeId);
+            SizeDto size = null;
+
+            if (sizeId > 0)
+            {
+                size = _sizeNumService.Get(sizeId);
+            }
 
             var isCart = SessionExtensionMethod.GetObject<List<CartItems>>(HttpContext.Session, "cart");
+            var products = _productService.Get(Id);
 
             if (isCart == null)
             {
                 List<CartItems> cart = new List<CartItems>();
-                cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Size = size.SizeNumber });
+                if (sizeId == 0)
+                {
+                    cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Image = products.ProductBaseImage });
+                }
+                else
+                {
+                    cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Size = size.SizeNumber, Image = products.ProductBaseImage });
+                }
+            
+
                 SessionExtensionMethod.SetObject(HttpContext.Session, "cart", cart);
             }
+
             else
             {
                 List<CartItems> cart = SessionExtensionMethod.GetObject<List<CartItems>>(HttpContext.Session, "cart");
@@ -332,11 +400,30 @@ namespace tkytekstil.Controllers
 
                 if (index != -1)
                 {
-                    cart[index].Quantity += adet;
+                    if (cart[index].Color != colorGet.ColorName || cart[index].Size != size.SizeNumber)
+                    {
+                        if(size == null)
+                        {
+                            cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Image = products.ProductBaseImage });
+                        }
+                        cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Size = size.SizeNumber, Image = products.ProductBaseImage });
+                    } 
+                    else
+                    {
+                        cart[index].Quantity += adet;
+                    }
                 }
                 else
                 {
-                    cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Size = size.SizeNumber });
+                    if(size != null)
+                    {
+                        cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Size = size.SizeNumber, Image = products.ProductBaseImage });
+                    }
+                    else
+                    {
+                        cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Image = products.ProductBaseImage });
+                    }
+                  
                 }
                 SessionExtensionMethod.SetObject(HttpContext.Session, "cart", cart);
             }

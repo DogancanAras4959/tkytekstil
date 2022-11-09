@@ -31,7 +31,7 @@ namespace tkytekstil.DAL
         public DbSet<ImagesProduct> imageProducts { get; set; }
         public DbSet<SizeNumProduct> sizeNumProduct { get; set; }
         public DbSet<ProductFavorite> productFavorite { get; set; }
-        public DbSet<OrderProductsDto> orderProducts { get; set; }
+        public DbSet<OrderProducts> orderProducts { get; set; }
         public DbSet<Order> orders { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

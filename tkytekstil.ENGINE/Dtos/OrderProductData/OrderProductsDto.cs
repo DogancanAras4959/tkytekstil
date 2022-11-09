@@ -8,7 +8,7 @@ using tkytekstil.ENGINE.Dtos.ProductData;
 
 namespace tkytekstil.ENGINE.Dtos.OrderProductData
 {
-    public class OrderProductDto : BaseEntityDto
+    public class OrderProductsDto : BaseEntityDto
     {
         public int ProductId { get; set; }
         public int OrderId { get; set; }

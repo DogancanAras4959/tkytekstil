@@ -20,7 +20,7 @@ namespace tkytekstil.ENGINE.Dtos.ShoppersData
         public string ShopperCity { get; set; }
         public string ShopperProvice { get; set; }
         public string ShopperCountry { get; set; }
-
+        public bool RememberMe { get; set; }
         public bool IsAppliedAccount { get; set; }
         public int CityId { get; set; }
         public int ProvinceId { get; set; }

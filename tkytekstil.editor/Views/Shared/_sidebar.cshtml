@@ -44,15 +44,15 @@
                 </li>
 
                 @*<li>
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="ri-shopping-bag-2-fill"></i>
-                        <span>Satışlar</span>
-                    </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href=@Url.Action("faturalar", "satislar")>Faturalar</a></li>
-                        <li><a href=@Url.Action("siparisler", "satislar")>Siparişler</a></li>
-                    </ul>
-                </li>*@
+            <a href="javascript: void(0);" class="has-arrow waves-effect">
+                <i class="ri-shopping-bag-2-fill"></i>
+                <span>Satışlar</span>
+            </a>
+            <ul class="sub-menu" aria-expanded="false">
+                <li><a href=@Url.Action("faturalar", "satislar")>Faturalar</a></li>
+                <li><a href=@Url.Action("siparisler", "satislar")>Siparişler</a></li>
+            </ul>
+        </li>*@
 
 
                 <li>
@@ -65,6 +65,17 @@
                         <li><a href=@Url.Action("roller", "hesap")>Roller</a></li>
                         <li><a href=@Url.Action("kullanicikayit", "hesap")>Kullanıcı Kayıt</a></li>
                         <li><a href=@Url.Action("rolkayit", "hesap")>Rol Kayıt</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="ri-shopping-basket-fill"></i>
+                        <span>Sipariş</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="@Url.Action("bekleyen","siparis")">Bekleyen</a></li>
+                        <li><a href=@Url.Action("onaylı", "siparis")>Onaylı</a></li>                  
                     </ul>
                 </li>
 

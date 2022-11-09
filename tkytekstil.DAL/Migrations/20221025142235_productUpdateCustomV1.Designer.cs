@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tkytekstil.DAL;
 
 namespace tkytekstil.DAL.Migrations
 {
     [DbContext(typeof(tkytekstildbcontext))]
-    partial class tkytekstildbcontextModelSnapshot : ModelSnapshot
+    [Migration("20221025142235_productUpdateCustomV1")]
+    partial class productUpdateCustomV1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -366,9 +368,6 @@ namespace tkytekstil.DAL.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("ChooseSizeIsHave")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("CreatedTime")
                         .HasColumnType("datetime2");
 
@@ -394,6 +393,9 @@ namespace tkytekstil.DAL.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.Property<string>("SizeIsHave")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedTime")
                         .HasColumnType("datetime2");

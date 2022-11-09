@@ -146,6 +146,10 @@
                         @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-input", id = "customSwitch1" })
                         <label class="form-check-label" for="customSwitch1">Aktif mi?</label>
                     </div>
+                    <div class="form-check form-switch mb-3" dir="ltr">
+                        @Html.CheckBoxFor(x => x.ChooseSizeIsHave, new { @class = "form-check-input", id = "customSwitch1" })
+                        <label class="form-check-label" for="customSwitch1">Beden Seçimini Düzenle</label>
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <label for="validationCustom02" class="form-label">Beden Belirle</label> <a href="@Url.Action("urunduzenle","urun",new { Id = Model.ID })"><i class="fa fa-edit"></i></a>

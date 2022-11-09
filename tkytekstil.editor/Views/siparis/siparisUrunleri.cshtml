@@ -1,0 +1,51 @@
+﻿@model IEnumerable<tkytekstil.ENGINE.Dtos.OrderProductData.OrderProductsDto>
+
+@{
+    ViewData["Title"] = "siparislerim";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Ürün</th>
+                                <th>Renk</th>
+                                <th>Beden</th>
+                                <th>Adet</th>
+                                <th>Zaman</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach (var item in Model)
+                            {
+
+                                <tr>
+                                    <th scope="row">@item.order.OrderNo</th>
+                                    <td>@item.product.ProductName</td>
+                                    <td>@item.Color</td>
+                                    <td>@item.Size</td>
+                                    <td>@item.QuantityItem</td>
+                                    <td>@item.CreatedTime.ToString("dd MMMM yyyy - HH:mm")</td>
+                                </tr>
+
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

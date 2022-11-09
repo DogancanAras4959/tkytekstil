@@ -444,7 +444,7 @@ namespace tkytekstil.editor.Controllers
             urun.BrandId = product.BrandId;
             urun.CategoryId = product.CategoryId;
             urun.UpdatedTime = DateTime.Now;
-
+            urun.ChooseSizeIsHave = product.ChooseSizeIsHave;
             _productService.Update(urun);
 
             return RedirectToAction("urunler", "urun");

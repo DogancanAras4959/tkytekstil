@@ -23,6 +23,7 @@ namespace tkytekstil.ENGINE.Dtos.ProductData
         public int CategoryId { get; set; }
         public int BrandId { get; set; }
         public int SizeId { get; set; }
+        public bool ChooseSizeIsHave { get; set; }
 
         public string GenerateSlug()
         {

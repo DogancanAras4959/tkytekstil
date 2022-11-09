@@ -12,6 +12,8 @@ namespace tkytekstil.ENGINE.Interface
     public interface IOrderService : ICrudService<Order, OrderDto>
     {
         int insertOrder(OrderDto order);
+        List<OrderDto> ordersByShopper();
+        List<OrderDto> ordersByCompletedShopper();
         List<OrderDto> ordersToShopper(int shopperId);
     }
 }

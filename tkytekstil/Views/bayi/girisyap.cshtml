@@ -12,12 +12,12 @@
     <div class="breadcrumb-area bg-light">
         <div class="container-fluid">
             <div class="breadcrumb-content text-center">
-                <h1 class="title">Kayıt | Başvuru Yap</h1>
+                <h1 class="title">Giriş Yap | Başvuru Yap</h1>
                 <ul>
                     <li>
                         <a href="@Url.Action("sayfa","anasayfa")">Ana Sayfa </a>
                     </li>
-                    <li class="active"> Kayıt | Başvuru Yap</li>
+                    <li class="active"> Giriş Yap | Başvuru Yap</li>
                 </ul>
             </div>
         </div>
@@ -52,15 +52,18 @@
                         <div class="single-input-item mb-1">
                             <input asp-for="ShopperPassword" type="password" placeholder="Şifrenizi giriniz">
                         </div>
-                        <!-- Input Password End -->
-                        <!-- Checkbox/Forget Password Start -->
-                        <div class="single-input-item mb-1">
+
+                        <div class="single-input-item mb-3">
                             <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
-                                <a href="#" class="forget-pwd mb-3">Şifrenizi mi unuttunuz?</a>
+                                <div class="remember-meta mb-3">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="rememberMe" asp-for="RememberMe">
+                                        <label class="custom-control-label" for="rememberMe">Beni Hatırla</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- Checkbox/Forget Password End -->
-                        <!-- Login Button Start -->
+
                         <div class="single-input-item mb-1">
                             <button class="btn btn btn-dark btn-hover-primary rounded-0">Giriş Yap</button>
                         </div>

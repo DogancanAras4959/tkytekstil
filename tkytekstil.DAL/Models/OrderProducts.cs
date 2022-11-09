@@ -9,9 +9,9 @@ using tkytekstil.DAL.Core;
 namespace tkytekstil.DAL.Models
 {
     [Table("orderProduct")]
-    public class OrderProductsDto : BaseEntity, IEntity
+    public class OrderProducts : BaseEntity, IEntity
     {
-        public OrderProductsDto()
+        public OrderProducts()
         {
 
         }

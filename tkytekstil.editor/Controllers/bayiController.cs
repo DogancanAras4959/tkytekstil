@@ -17,6 +17,7 @@ namespace tkytekstil.editor.Controllers
 {
     public class bayiController : Controller
     {
+
         #region Fields
 
         private readonly IShoppersService _shopperService;
@@ -71,11 +72,11 @@ namespace tkytekstil.editor.Controllers
 
                 await _contactDataService.sendMailContact(message);
 
-                return RedirectToAction("basvurular", "bayi");
+                return RedirectToAction("bayiler", "bayi");
             }
             catch (Exception)
             {
-                return RedirectToAction("basvurular", "bayi");
+                return RedirectToAction("bayiler", "bayi");
             }
 
         }
@@ -166,5 +167,6 @@ namespace tkytekstil.editor.Controllers
         }
 
         #endregion
+
     }
 }

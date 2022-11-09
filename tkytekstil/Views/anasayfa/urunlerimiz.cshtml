@@ -8,7 +8,7 @@
 @using tkytekstil.ENGINE.Dtos.ColorProductData
 @using tkytekstil.ENGINE.Dtos.ProductFavoriteData
 @using tkytekstil.ENGINE.Dtos.ShoppersData
-@using tkytekstil.ENGINE.Dtos.BrandData 
+@using tkytekstil.ENGINE.Dtos.BrandData
 
 @{
     ViewData["Title"] = "urunlerimiz";
@@ -20,7 +20,7 @@
     List<ColorDto> colors = ViewBag.ListColor as List<ColorDto>;
     List<CategoriesDto> categories = ViewBag.ListCategory as List<CategoriesDto>;
     List<ColorProductDto> colorProducts = ViewBag.ListColorProduct as List<ColorProductDto>;
-    List<ColorDto> colorFilter = SessionExtensionMethod.GetObject<List<ColorDto>>(Context.Session, "filterColorSession") as List<ColorDto>;
+    //List<ColorDto> colorFilter = SessionExtensionMethod.GetObject<List<ColorDto>>(Context.Session, "filterColorSession") as List<ColorDto>;
     List<ProductFavoriteDto> pfList = ViewBag.pfList as List<ProductFavoriteDto>;
     List<BrandDto> brandList = ViewBag.ListBrand as List<BrandDto>;
     ShoppersDto shoppers = SessionExtensionMethod.GetObject<ShoppersDto>(Context.Session, "account");
@@ -97,34 +97,34 @@
                 }
 
 
-                @if (colorFilter != null && colorFilter.Count > 0)
-                {
-                    <div class="row" style="margin-bottom:20px;">
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="btn-group">
-                                @foreach (var item in colorFilter)
-                                {
-                                    @if (item.ColorName == "EKRU" || item.ColorName == "BEYAZ")
+                @*@if (colorFilter != null && colorFilter.Count > 0)
+                    {
+                        <div class="row" style="margin-bottom:20px;">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="btn-group">
+                                    @foreach (var item in colorFilter)
                                     {
-                                        <a href="@Url.Action("urunlerimiz","anasayfa", new { renkFiltreClose = item.ColorName })" id="@item.ID" class="btn btn-sm" style="margin-left:5px; background-color:@item.ColorCode; color:#000; border:1px solid #000;">Kaldır</a>
-                                    }
+                                        @if (item.ColorName == "EKRU" || item.ColorName == "BEYAZ")
+                                        {
+                                            <a href="@Url.Action("urunlerimiz","anasayfa", new { renkFiltreClose = item.ColorName })" id="@item.ID" class="btn btn-sm" style="margin-left:5px; background-color:@item.ColorCode; color:#000; border:1px solid #000;">Kaldır</a>
+                                        }
 
-                                    else
-                                    {
-                            <a href="@Url.Action("urunlerimiz","anasayfa", new { renkFiltreClose = item.ColorName })" id="@item.ID" class="btn btn-sm" style="margin-left:5px; background-color:@item.ColorCode; color:#fff;">Kaldır</a>
-                                    }
-                                }
-                                <a href="@Url.Action("clearfilter","anasayfa")" class="btn btn-sm btn-default" style="margin-left:15px; border:1px solid #000;">Filtreyi Temizle </a>
-                                <span style="margin-left:10px;">filtresinden <strong>@TempData["Count"]</strong> ürün</span>
+                                        else
+                                        {
+                                <a href="@Url.Action("urunlerimiz","anasayfa", new { renkFiltreClose = item.ColorName })" id="@item.ID" class="btn btn-sm" style="margin-left:5px; background-color:@item.ColorCode; color:#fff;">Kaldır</a>
+                                        }
+                                    }*@
+                @*<a href="@Url.Action("clearfilter","anasayfa")" class="btn btn-sm btn-default" style="margin-left:15px; border:1px solid #000;">Filtreyi Temizle </a>
+                    <span style="margin-left:10px;">filtresinden <strong>@TempData["Count"]</strong> ürün</span>*@
 
+                @*</div>
                             </div>
                         </div>
-                    </div>
-                }
+                    }*@
 
                 <div class="row shop_wrapper grid_3">
 
-                    @foreach (var item in products.OrderByDescending(x=> x.SortedRow == true))
+                    @foreach (var item in products.OrderByDescending(x => x.SortedRow == true))
                     {
                         <div class="col-lg-4 col-md-4 col-sm-6 product" data-aos="fade-up" data-aos-delay="200">
                             <div class="product-inner">
@@ -270,29 +270,29 @@
                                     }
                                 </ul>
                             </div>
-                        @*</div>
-                        <div class="widget-list mb-10">
-                            <h3 class="widget-title">Beden</h3>
-                            <div class="sidebar-body">
-                                <form method="get" asp-action="urunlerimiz" asp-controller="anasayfa">
-                                    <ul class="checkbox-container categories-list">
+                            @*</div>
+                                <div class="widget-list mb-10">
+                                    <h3 class="widget-title">Beden</h3>
+                                    <div class="sidebar-body">
+                                        <form method="get" asp-action="urunlerimiz" asp-controller="anasayfa">
+                                            <ul class="checkbox-container categories-list">
 
-                                        @for (int i = 0; i < sizes.Count; i++)
-                                        {
-                                            string customChech = "customCheckNumber" + sizes[i].ID;
-                                            <li>
-                                                <div class="custom-control custom-checkbox">
+                                                @for (int i = 0; i < sizes.Count; i++)
+                                                {
+                                                    string customChech = "customCheckNumber" + sizes[i].ID;
+                                                    <li>
+                                                        <div class="custom-control custom-checkbox">
 
-                                                    <input type="checkbox" class="custom-control-input" id="@customChech" value="@sizes[i].ID">
-                                                    <label class="custom-control-label" for="@customChech">@sizes[i].SizeNumber</label>
-                                                </div>
-                                            </li>
-                                        }
-                                    </ul>
-                                </form>
+                                                            <input type="checkbox" class="custom-control-input" id="@customChech" value="@sizes[i].ID">
+                                                            <label class="custom-control-label" for="@customChech">@sizes[i].SizeNumber</label>
+                                                        </div>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </form>
 
-                            </div>
-                            </div>*@
+                                    </div>
+                                    </div>*@
                             <div class="widget-list mb-10" style="margin-top: 50px;">
                                 <h3 class="widget-title">Renkler</h3>
                                 <div class="sidebar-body">
@@ -316,16 +316,17 @@
                                 </div>
                             </div>
                         </div>
-                    </aside>
-                    <!-- Sidebar Widget End -->
-                </div>
+                    </div>
+                </aside>
+                <!-- Sidebar Widget End -->
             </div>
         </div>
     </div>
+</div>
 
-    <script src="~/assets/js/vendor/jquery-3.6.0.min.js"></script>
+<script src="~/assets/js/vendor/jquery-3.6.0.min.js"></script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
     function getValue(value) {
         var sizeId = value;
@@ -341,7 +342,7 @@
 
     }
 
-    </script>
+</script>
 
 
 

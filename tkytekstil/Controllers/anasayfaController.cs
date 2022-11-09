@@ -62,18 +62,21 @@ namespace tkytekstil.Controllers
         [HttpGet]
         public IActionResult sayfa()
         {
+            TempData["FooterHave"] = 1;
             DataPage();
             return View();
         }
 
         [HttpGet]
-        public IActionResult urunlerimiz(int? pageNumber, int? pageSizeGet, int? categoryId, int? brandId, int? sizeId, string searchString, string renkfiltre = "", string renkFiltreClose="")
+        public IActionResult urunlerimiz(int? pageNumber, int? pageSizeGet, int? categoryId, int? brandId, int? sizeId, string searchString, string renkfiltre = "")
         {
+
+            TempData["FooterHave"] = 1;
+
             int pageSize = 0;
             List<ColorDto> colorFilter = null;
             List<ProductDto> productFilter = null;
             var colorProducts = _colorProductService.GetAll();
-            var colorIsHave = SessionExtensionMethod.GetObject<List<ColorDto>>(HttpContext.Session, "filterColorSession");
 
             if (pageSizeGet > 0)
                 pageSize = (int)pageSizeGet;    
@@ -91,147 +94,9 @@ namespace tkytekstil.Controllers
                 TempData["count"] = products.Count;
             }
 
-            else if(renkFiltreClose != "")
-            {
-                if (colorIsHave != null)
-                {
-                    #region Color Session
-
-                    colorFilter = new List<ColorDto>();
-                    productFilter = new List<ProductDto>();
-
-                    foreach (var item in colorIsHave)
-                    {
-                        if (item.ColorName != renkFiltreClose)
-                        {
-                            colorFilter.Add(item);
-                        }
-                    }
-
-                    List<ColorDto> newColorList = new List<ColorDto>();
-                    newColorList = colorFilter;
-
-                    foreach (var item in newColorList)
-                    {
-                        List<ColorProductDto> colorProductNew = _colorProductService.colorToColorId(item.ID);
-                        List<ProductDto> lastList = new List<ProductDto>();
-                        if (productFilter.Count > 0)
-                        {
-                            foreach (var item2 in colorProductNew)
-                            {
-                                foreach (var item3 in productFilter)
-                                {
-                                    if (item2.ProductId == item3.ID)
-                                    {
-                                        var product = _productService.getProduct(item2.ProductId);
-                                        lastList.Add(product);
-                                    }
-                                }
-                            }
-                            productFilter = lastList;
-                        }
-                        else
-                        {
-                            foreach (var item4 in colorProductNew)
-                            {
-                                var product = _productService.getProduct(item4.ProductId);
-                                productFilter.Add(product);
-                            }
-                        }
-                    }
-
-                    var settings = new Newtonsoft.Json.JsonSerializerSettings();
-                    settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-
-                    string data = JsonConvert.SerializeObject(newColorList, settings);
-                    var deSerilizeData = JsonConvert.DeserializeObject(data).ToString();
-                    var resultSession = JsonConvert.DeserializeObject<List<ColorDto>>(deSerilizeData);
-                    SessionExtensionMethod.SetObject(HttpContext.Session, "filterColorSession", resultSession);
-
-                    colorIsHave = SessionExtensionMethod.GetObject<List<ColorDto>>(HttpContext.Session, "filterColorSession");
-
-                    #endregion
-
-                    TempData["Count"] = productFilter.Count;
-                    ViewBag.ListColorFilter = colorIsHave;
-                    ViewBag.Products = PaginationList<ProductDto>.Create(productFilter, pageNumber ?? 1, pageSize);
-                    FilterData();
-                    return View();
-                }
-            }
-
             else if (renkfiltre != "")
             {
 
-                if (colorIsHave != null)
-                {
-                    #region Color Session
-
-                    colorFilter = new List<ColorDto>();
-                    productFilter = new List<ProductDto>();
-
-                    foreach (var item in colorIsHave)
-                    {
-                        colorFilter.Add(item);
-                    }
-
-                    var getColor = _colorService.getColorByName(renkfiltre);
-
-                    colorFilter.Add(getColor);
-
-                    List<ColorDto> newColorList = new List<ColorDto>();
-                    newColorList = colorFilter;
-
-                    foreach (var item in newColorList)
-                    {
-                        List<ColorProductDto> colorProductNew = _colorProductService.colorToColorId(item.ID);
-                        List<ProductDto> lastList = new List<ProductDto>();
-                        if (productFilter.Count > 0)
-                        {
-                            foreach (var item2 in colorProductNew)
-                            {
-                                foreach (var item3 in productFilter)
-                                {
-                                    if (item2.ProductId == item3.ID)
-                                    {
-                                        var product = _productService.getProduct(item2.ProductId);
-                                        lastList.Add(product);
-                                    }
-                                }
-                            }
-                            productFilter = lastList;
-                        }
-                        else
-                        {
-                            foreach (var item4 in colorProductNew)
-                            {
-                                var product = _productService.getProduct(item4.ProductId);
-                                productFilter.Add(product);
-                            }
-                        }
-                    }
-
-                    var settings = new Newtonsoft.Json.JsonSerializerSettings();
-                    settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-
-                    string data = JsonConvert.SerializeObject(newColorList, settings);
-                    var deSerilizeData = JsonConvert.DeserializeObject(data).ToString();
-                    var resultSession = JsonConvert.DeserializeObject<List<ColorDto>>(deSerilizeData);
-                    SessionExtensionMethod.SetObject(HttpContext.Session, "filterColorSession", resultSession);
-
-                    colorIsHave = SessionExtensionMethod.GetObject<List<ColorDto>>(HttpContext.Session, "filterColorSession");
-
-                    #endregion
-
-                    TempData["Count"] = productFilter.Count;
-                    ViewBag.ListColorFilter = colorIsHave;
-                    ViewBag.Products = PaginationList<ProductDto>.Create(productFilter, pageNumber ?? 1, pageSize);
-                    FilterData();
-                    return View();
-                }
-
-                else
-                {
                     var listColorProduct = _colorProductService.GetAll();
                     colorFilter = new List<ColorDto>();
 
@@ -250,19 +115,10 @@ namespace tkytekstil.Controllers
                         }
                     }
 
-                    var settings = new Newtonsoft.Json.JsonSerializerSettings();
-                    settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-
-                    string data = JsonConvert.SerializeObject(colorFilter, settings);
-                    var deSerilizeData = JsonConvert.DeserializeObject(data).ToString();
-                    var resultSession = JsonConvert.DeserializeObject<List<ColorDto>>(deSerilizeData);
-                    SessionExtensionMethod.SetObject(HttpContext.Session, "filterColorSession", resultSession);
-
                     TempData["Count"] = productFilter.Count;
                     ViewBag.Products = PaginationList<ProductDto>.Create(productFilter, pageNumber ?? 1, pageSize);
                     FilterData();
                     return View();
-                }
 
             }
 
@@ -343,6 +199,7 @@ namespace tkytekstil.Controllers
         [Route("iletisim")]
         public IActionResult iletisim()
         {
+            TempData["FooterHave"] = 1;
             return View();
         }
 

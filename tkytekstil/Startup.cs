@@ -1,16 +1,14 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
 using tkytekstil.Core;
+using tkytekstil.Core.AuthorizationHandler;
 using tkytekstil.CORE.EmailConfig;
 using tkytekstil.ENGINE.Mapper;
 
@@ -46,12 +44,30 @@ namespace tkytekstil
             services.AddInjections();
 
             services.AddDistributedMemoryCache();
+
             services.AddSession(options =>
             {
 
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
-                options.Cookie.IsEssential = true;
-                options.Cookie.HttpOnly = true;
+
+            });
+
+            services.AddAuthentication("FormAuthenticationWithCookie")
+            .AddCookie("FormAuthenticationWithCookie", config =>
+            {
+                config.Cookie.Name = "form-authentication-with-cookie";
+                config.LoginPath = "/bayi/girisyap";
+                config.AccessDeniedPath = "/bayi/girisyap";
+            });
+
+            //for authorization
+            services.AddAuthorization(config =>
+            {
+                config.AddPolicy("UserPolicy", policyBuilder =>
+                {
+                    policyBuilder.UserRequireCustomClaim(ClaimTypes.Email);
+                    policyBuilder.UserRequireCustomClaim(ClaimTypes.Name);
+                });
 
             });
 
@@ -83,8 +99,12 @@ namespace tkytekstil
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
             app.UseSession();
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

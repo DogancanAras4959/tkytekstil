@@ -89,13 +89,14 @@ namespace tkytekstil.ENGINE.Mapper
             CreateMap<ImagesProductDto, ImagesProduct>().ForMember(x => x.product, y=> y.MapFrom(t=> t.product));
             CreateMap<ImagesProduct, ImagesProductDto>();
 
-            CreateMap<Order, OrderDto>();
+            CreateMap<Order, OrderDto>()
+             .ForMember(x => x.shopper, y => y.MapFrom(t => t.shopper));
             CreateMap<OrderDto, Order>();
 
-            CreateMap<OrderProductsDto, OrderProductDto>()
+            CreateMap<OrderProducts, OrderProductsDto>()
             .ForMember(x => x.product, y => y.MapFrom(t => t.product))
             .ForMember(x => x.order, y => y.MapFrom(t => t.order));
-            CreateMap<OrderProductDto, OrderProductsDto>();
+            CreateMap<OrderProductsDto, OrderProducts>();
         }
     }
 }

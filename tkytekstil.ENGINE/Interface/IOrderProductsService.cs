@@ -9,8 +9,8 @@ using tkytekstil.ENGINE.Dtos.OrderProductData;
 
 namespace tkytekstil.ENGINE.Interface
 {
-    public interface IOrderProductsService : ICrudService<OrderProductsDto, OrderProductDto>
+    public interface IOrderProductsService : ICrudService<OrderProducts, OrderProductsDto>
     {
-        List<OrderProductDto> orderToProducts(int orderId);
+        List<OrderProductsDto> orderToProducts(int orderId);
     }
 }

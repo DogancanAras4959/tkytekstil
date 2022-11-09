@@ -13,7 +13,7 @@ namespace tkytekstil.DAL.Models
     {
         public Order()
         {
-            orderProducts = new List<OrderProductsDto>();
+            orderProducts = new List<OrderProducts>();
         }
 
         [ForeignKey("shopper")]
@@ -23,6 +23,6 @@ namespace tkytekstil.DAL.Models
         public int Quantity { get; set; }
         public Shoppers shopper { get; set; }
 
-        public List<OrderProductsDto> orderProducts { get; set; }
+        public List<OrderProducts> orderProducts { get; set; }
     }
 }

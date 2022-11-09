@@ -15,7 +15,6 @@ namespace tkytekstil.DAL.Models
             provinceList = new List<Provinces>();
             shopperList = new List<Shoppers>();
         }
-        public int Id { get; set; }
 
         public string CityName { get; set; }
         

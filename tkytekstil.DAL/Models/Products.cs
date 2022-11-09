@@ -18,7 +18,7 @@ namespace tkytekstil.DAL.Models
             imagesProductList = new List<ImagesProduct>();
             sizeNumProduct = new List<SizeNumProduct>();
             productFavoriteList = new List<ProductFavorite>();
-            orderProducts = new List<OrderProductsDto>();
+            orderProducts = new List<OrderProducts>();
         }
 
         public string ProductName { get; set; }
@@ -28,7 +28,9 @@ namespace tkytekstil.DAL.Models
         public bool sortedRow { get; set; }
         public bool Vitrin { get; set; }
         public int Quantity { get; set; }
-   
+        public bool ChooseSizeIsHave { get; set; }
+
+
         [ForeignKey("categoryProduct")]
         public int CategoryId { get; set; }
 
@@ -41,7 +43,6 @@ namespace tkytekstil.DAL.Models
         public ICollection<ImagesProduct> imagesProductList { get; set; }
         public ICollection<SizeNumProduct> sizeNumProduct { get; set; }
         public ICollection<ProductFavorite> productFavoriteList { get; set; }
-
-        public ICollection<OrderProductsDto> orderProducts { get; set; }
+        public ICollection<OrderProducts> orderProducts { get; set; }
     }
 }

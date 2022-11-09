@@ -13,17 +13,17 @@ using tkytekstil.ENGINE.Interface;
 
 namespace tkytekstil.ENGINE.Engines
 {
-    public class OrderProductService : CrudService<OrderProductsDto, OrderProductDto>, IOrderProductsService
+    public class OrderProductService : CrudService<OrderProducts, OrderProductsDto>, IOrderProductsService
     {
-        public OrderProductService(IRepository<OrderProductsDto> repository, IMapper mapper) : base(repository, mapper)
+        public OrderProductService(IRepository<OrderProducts> repository, IMapper mapper) : base(repository, mapper)
         {
 
         }
 
-        public List<OrderProductDto> orderToProducts(int orderId)
+        public List<OrderProductsDto> orderToProducts(int orderId)
         {
             var entity = _repository.Where(x => x.OrderId == orderId).Include("order").Include("product").ToList();
-            var entityDto = _mapper.Map<List<OrderProductsDto>, List<OrderProductDto>>(entity);
+            var entityDto = _mapper.Map<List<OrderProducts>, List<OrderProductsDto>>(entity);
             return entityDto;
         }
     }

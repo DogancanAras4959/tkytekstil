@@ -14,18 +14,14 @@
                         <div class="mb-3">
                             <label for="validationCustom01" class="form-label">Bayi Adı</label>
                             @Html.TextBoxFor(x => x.ShopperName, new { @class = "form-control", id = "ShopperName", placeholder = "Bayi adınızı giriniz", @required = "" })
-                            <div class="valid-feedback">
-                                Kullanıcı adı geçerli!
-                            </div>
+                            
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="validationCustom02" class="form-label">Telefon No</label>
                             @Html.TextBoxFor(x => x.ShopperPhone, new { @class = "form-control", id = "ShopperPhone", placeholder = "Bayi telefonunuzu giriniz", @required = "" })
-                            <div class="valid-feedback">
-                                Görünen isim geçerli!
-                            </div>
+                          
                         </div>
                     </div>
                 </div>
@@ -34,39 +30,32 @@
                         <div class="mb-3">
                             <label for="validationCustom01" class="form-label">Email Adresi</label>
                             @Html.TextBoxFor(x => x.ShopperEmail, new { @class = "form-control", id = "ShopperEmail", placeholder = "Email adresinizi giriniz", @required = "" })
-                            <div class="valid-feedback">
-                                Kullanıcı adı geçerli!
-                            </div>
+                           
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label for="validationCustom02" class="form-label">Adres</label>
                             @Html.TextBoxFor(x => x.ShopperAddress, new { @class = "form-control", id = "ShopperAdress", placeholder = "Adresinizi giriniz", @required = "" })
-                            <div class="valid-feedback">
-                                Görünen isim geçerli!
-                            </div>
+                           
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="validationCustom03" class="form-label">İl</label>
-                            @Html.DropDownListFor(x => x.CityId, (SelectList)ViewBag.City, "İl Seçiniz", new { @class = "form-select", id = "CityId", @required = "" })
-                            <div class="invalid-feedback">
-                                Seçilen rol geçerli.
-                            </div>
-
+                            <label for="validationCustom01" class="form-label">İl</label>
+                            @Html.TextBoxFor(x => x.ShopperCity, new { @class = "form-control", id = "ShopperCity", placeholder = "İl giriniz", @required = "" })
+                           
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="validationCustom04" class="form-label">İlçe</label>
-                            <select id="ilceler" class="form-control"></select>
+                            <label for="validationCustom02" class="form-label">İlçe</label>
+                            @Html.TextBoxFor(x => x.ShopperProvice, new { @class = "form-control", id = "ShopperProvice", placeholder = "İlçe giriniz", @required = "" })
+                           
                         </div>
                     </div>
-
                 </div>
                 <div class="form-check form-switch mb-3" dir="ltr">
                     @Html.CheckBoxFor(x => x.IsActive, new { @class = "form-check-input", id = "IsActive" })
@@ -85,34 +74,6 @@
 
 <script type="text/javascript">
 
-    getIlceler();
-
-    $("#CityId").change(function () {
-        getIlceler();
-    })
-
-    function getIlceler() {
-        $("#ilceler").html('');
-        var sehirID = $("#CityId").val();
-        $.ajax({
-            url: "/bayi/GetIlcelerBySehirID/" + sehirID,
-            type: "GET",
-            success: function (data) {
-                data.forEach(x => {
-
-                    let option = '<option value="' + x.ID + '">' + x.ProvinceName + '</option>';
-                    $("#ilceler").append(option);
-
-                })
-            },
-            error: function (e, j, k) {
-                //let responseText = e.responseText.replace("UoW.CORE.Exceptions.BorcVarException:", "");
-                //toastr["warning"](responseText, "Uyarı !");
-                console.log(e.responseJSON);
-            }
-        });
-    }
-
     $("#btn_insert").click(function () {
 
         let formData = {
@@ -122,8 +83,8 @@
             ShopperPhone: $("#ShopperPhone").val(),
             ShopperAddress: $("#ShopperAddress").val(),
             IsActive: $("#IsActive").val(),
-            CityId: Number.parseInt($("#CityId").val()),
-            ilceID: Number.parseInt($("#ilceler").val())
+            ShopperCity: $("#ShopperCity").val(),
+            ShopperProvince: $("#ShopperProvince").val(),
         };
 
         console.log(formData);

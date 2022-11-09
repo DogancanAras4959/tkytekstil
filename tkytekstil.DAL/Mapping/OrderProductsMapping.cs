@@ -9,9 +9,9 @@ using tkytekstil.DAL.Models;
 
 namespace tkytekstil.DAL.Mapping
 {
-    public class OrderProductsMapping : IEntityTypeConfiguration<OrderProductsDto>
+    public class OrderProductsMapping : IEntityTypeConfiguration<OrderProducts>
     {
-        public void Configure(EntityTypeBuilder<OrderProductsDto> builder)
+        public void Configure(EntityTypeBuilder<OrderProducts> builder)
         {
             builder.HasKey(x => x.Id);
             builder.HasOne(x => x.order).WithMany(x => x.orderProducts).HasForeignKey(x => x.OrderId);
