@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using tkytekstil.COMMON.Helpers.Cyroptography;
-using tkytekstil.Core;
+using tkytekstil.editor.Core;
 using tkytekstil.editor.Models;
 using tkytekstil.ENGINE.Dtos.RoleData;
 using tkytekstil.ENGINE.Dtos.UserData;

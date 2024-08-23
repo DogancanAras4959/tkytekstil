@@ -136,9 +136,7 @@
                             <div class="mb-3">
                                 <label for="validationCustom02" class="form-label">Spot</label>
                                 @Html.TextBoxFor(x => x.ProductSpot, new { @class = "form-control", id = "validationCustom02", placeholder = "Spot giriniz", @required = "" })
-                                <div class="valid-feedback">
-                                    Kategori açıklaması geçerli!
-                                </div>
+                               
                             </div>
                         </div>
                     </div>
@@ -270,24 +268,27 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                            <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">Adet</label>
-                                @Html.TextBoxFor(x => x.Quantity, new { @class = "form-control", id = "validationCustom02", placeholder = "Adet giriniz", @required = "" })
-                                <div class="valid-feedback">
-                                    Kategori açıklaması geçerli!
-                                </div>
-                            </div>
+                     <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="validationCustom02" class="form-label">Fiyat</label>
+                            @Html.TextBoxFor(x => x.Price, new { @class = "form-control", id = "validationCustom02", placeholder = "Fiyat giriniz", @required = "" })
+                          
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="validationCustom02" class="form-label">Adet</label>
+                            @Html.TextBoxFor(x => x.Quantity, new { @class = "form-control", id = "validationCustom02", placeholder = "Adet giriniz", @required = "" })
+                          
+                        </div>
+                    </div>
+                </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="mb-3">
                                 <label for="validationCustom01" class="form-label">Kategori</label>
                                 @Html.DropDownListFor(x => x.CategoryId, (SelectList)ViewBag.Category, "Kategori Seçiniz", new { @class = "form-select", id = "validationCustom03", @required = "" })
-                                <div class="valid-feedback">
-                                    Kategori adı geçerli!
-                                </div>
+                               
                             </div>
                         </div>
                     </div>

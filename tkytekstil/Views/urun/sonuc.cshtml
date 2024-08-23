@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "sonuc";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
@@ -51,18 +50,39 @@
 </div>
 <!-- Breadcrumb Section End -->
 <!-- 404 Error Section Start -->
-<div class="section section-margin">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="error_form">
-                    <h1 class="title text-success">Tebrikler!</h1>
-                    <h2 class="sub-title">Siparişiniz Alındı</h2>
-                    <p>Siparişiniz alındı. En kısa sürede sizlere mail yoluyla veya telefon üzerinden<br> ulaşıp bilgilendireceğiz!</p>
-                    <a href="@Url.Action("sayfa","anasayfa")" class="btn btn-primary btn-hover-dark rounded-0">Ana Sayfaya Dön</a>
+@if (ViewBag.Error != "")
+{
+    <div class="section section-margin">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="error_form">
+                        <h1 class="title text-success">Bir Hata oluştu!</h1>
+                        <h2 class="sub-title">Siparişiniz Alınamadı :(</h2>
+                        <p>@ViewBag.Error</p>
+                        <a href="@Url.Action("sayfa","anasayfa")" class="btn btn-primary btn-hover-dark rounded-0">Ana Sayfaya Dön</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <div class="section section-margin">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="error_form">
+                        <h1 class="title text-success">Tebrikler!</h1>
+                        <h2 class="sub-title">Siparişiniz Alındı</h2>
+                        <p>Siparişiniz alındı. En kısa sürede sizlere mail yoluyla veya telefon üzerinden<br> ulaşıp bilgilendireceğiz!</p>
+                        <a href="@Url.Action("sayfa","anasayfa")" class="btn btn-primary btn-hover-dark rounded-0">Ana Sayfaya Dön</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+
+}

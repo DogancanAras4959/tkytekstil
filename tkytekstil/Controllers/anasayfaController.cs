@@ -23,6 +23,7 @@ using tkytekstil.Models;
 
 namespace tkytekstil.Controllers
 {
+    [ResponseCache(CacheProfileName = "Default120")]
     public class anasayfaController : Controller
     {
 
@@ -198,6 +199,31 @@ namespace tkytekstil.Controllers
         [HttpGet]
         [Route("iletisim")]
         public IActionResult iletisim()
+        {
+            TempData["FooterHave"] = 1;
+            return View();
+        }
+
+        [HttpGet]
+        [Route("gizlilik")]
+        public IActionResult gizlilik()
+        {
+            TempData["FooterHave"] = 1;
+            return View();
+        }
+
+
+        [HttpGet]
+        [Route("teslimatveiade")]
+        public IActionResult teslimatveiade()
+        {
+            TempData["FooterHave"] = 1;
+            return View();
+        }
+
+        [HttpGet]
+        [Route("mesafelisatis")]
+        public IActionResult mesafelisatis()
         {
             TempData["FooterHave"] = 1;
             return View();

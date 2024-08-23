@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -86,7 +86,6 @@
     <ProjectReference Include="..\tkytekstil.COMMON\tkytekstil.COMMON.csproj" />
     <ProjectReference Include="..\tkytekstil.CORE\tkytekstil.CORE.csproj" />
     <ProjectReference Include="..\tkytekstil.ENGINE\tkytekstil.ENGINE.csproj" />
-    <ProjectReference Include="..\tkytekstil\tkytekstil.csproj" />
   </ItemGroup>
 
   <ItemGroup>

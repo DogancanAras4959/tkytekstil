@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Iyzipay.Model.V2.Subscription;
+using Iyzipay.Model;
+using Iyzipay.Request;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -22,9 +25,13 @@ using tkytekstil.ENGINE.Dtos.ShoppersData;
 using tkytekstil.ENGINE.Dtos.SizeData;
 using tkytekstil.ENGINE.Interface;
 using tkytekstil.Models;
+using Iyzipay;
+using tkytekstil.DAL.Models;
 
 namespace tkytekstil.Controllers
 {
+
+    [ResponseCache(CacheProfileName = "Default120")]
     public class urunController : Controller
     {
 
@@ -88,7 +95,7 @@ namespace tkytekstil.Controllers
                     ViewBag.pf = pf;
                 }
             }
-     
+
             ViewBag.Images = _imageProductService.getToIntProduct(value.ID);
             ViewBag.ProductsLikesList = _productService.productListToCategoryId(value.CategoryId);
             ViewBag.SizeProductList = _sizeNumberProductService.listSizeNumProductToProduct(value.ID);
@@ -112,7 +119,7 @@ namespace tkytekstil.Controllers
             }
 
             ViewBag.ColorProductList = newColors;
-           
+
             #region Meta
 
             MetaViewModel meta = new MetaViewModel();
@@ -222,6 +229,8 @@ namespace tkytekstil.Controllers
         {
             try
             {
+                TempData["FooterHave"] = 1;
+
                 var isAuthenticated = User.Identity.IsAuthenticated;
                 ShoppersDto shopper = null;
 
@@ -246,26 +255,160 @@ namespace tkytekstil.Controllers
 
                 int result = _orderService.insertOrder(order);
 
+                foreach (var item in cart)
+                {
+
+                    OrderProductsDto newOrderProduct = new OrderProductsDto()
+                    {
+                        OrderId = result,
+                        CreatedTime = DateTime.Now,
+                        Color = item.Color,
+                        Size = item.Size,
+                        IsActive = true,
+                        QuantityItem = item.Quantity,
+                       
+                        ProductId = item.products.ID,
+                    };
+
+                    _orderProductService.Insert(newOrderProduct);
+                }
+
                 if (result > 0)
                 {
+
+                    List<CartItems> newCarts = new List<CartItems>();
+
                     foreach (var item in cart)
                     {
+                        var product = _productService.getProduct(item.products.ID);
 
-                        OrderProductsDto newOrderProduct = new OrderProductsDto()
+                        CartItems cartNew = new CartItems
                         {
-                            OrderId = result,
-                            CreatedTime = DateTime.Now,
+                            products = product,
+                            Quantity = item.Quantity,
                             Color = item.Color,
                             Size = item.Size,
-                            IsActive = true,
-                            QuantityItem = item.Quantity,
-                            ProductId = item.products.ID,
+                            Price= item.Price * item.Quantity,               
                         };
-
-                        _orderProductService.Insert(newOrderProduct);
+                        newCarts.Add(cartNew);
                     }
 
-                    var callbackUrl = Url.Page("/bayi/hesabim", pageHandler: null, values: new {  }, protocol: Request.Scheme);
+                    Options options = new Options();
+                    options.ApiKey = "xccI8zO2I0Z0hm0s3wYmcCELTK3X7Y4t"; //Iyzico Tarafından Sağlanan Api Key
+                    options.SecretKey = "EyIvVToaDxVEFAGqD0TolRNJpmaOgQME"; //Iyzico Tarafından Sağlanan Secret Key
+                    options.BaseUrl = "https://api.iyzipay.com";
+
+                    int priceConverted = Convert.ToInt32(newCarts.Sum(x => x.Price));
+
+                    //Kart Bilgilerini Dolduralım.
+                    CreateCheckoutFormInitializeRequest request = new CreateCheckoutFormInitializeRequest();
+                    request.Locale = Locale.TR.ToString();
+                    request.ConversationId = order.ShopperId.ToString();
+                    request.Price = priceConverted.ToString(); // Tutar // price ile değiştireceğiz
+                    request.PaidPrice = priceConverted.ToString();
+                    request.Currency = Currency.TRY.ToString();
+                    request.BasketId = order.OrderNo;
+                    request.PaymentGroup = PaymentGroup.PRODUCT.ToString();
+                    request.CallbackUrl = "https://tkytekstil.com/sonuc"; /// Geri Dönüş Urlsi
+
+                    List<int> enabledInstallments = new List<int>();
+                    enabledInstallments.Add(2);
+                    enabledInstallments.Add(3);
+                    enabledInstallments.Add(6);
+                    enabledInstallments.Add(9);
+                    request.EnabledInstallments = enabledInstallments;
+
+                    //Alıcı Bilgilerini Dolduralım.
+                    Buyer buyer = new Buyer();
+                    buyer.Id = shopper.ID.ToString();
+                    buyer.Name = shopper.ShopperName;
+                    buyer.Surname = shopper.ShopperSurname;
+                    buyer.GsmNumber = shopper.ShopperPhone;
+                    buyer.Email = shopper.ShopperEmail;
+                    buyer.IdentityNumber = "64801087004";
+                    buyer.LastLoginDate = shopper.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    buyer.RegistrationDate = shopper.CreatedTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    buyer.RegistrationAddress = shopper.ShopperCity;
+                    buyer.Ip = "91.93.129.194";
+                    buyer.City = shopper.ShopperCity;
+                    buyer.Country = "Turkey";
+                    buyer.ZipCode = "35130";
+                    request.Buyer = buyer;
+                    Address shippingAddress = new Address();
+                    shippingAddress.ContactName = shopper.ShopperName + " " + shopper.ShopperSurname;
+                    shippingAddress.City = shopper.ShopperCity;
+                    shippingAddress.Country = "Turkey";
+                    shippingAddress.Description = shopper.ShopperAddress;
+                    shippingAddress.ZipCode = "35130";
+                    request.ShippingAddress = shippingAddress;
+                    Address billingAddress = new Address();
+                    billingAddress.ContactName = shopper.ShopperName + " " + shopper.ShopperSurname;
+                    billingAddress.City = "İstanbul";
+                    billingAddress.Country = "Turkey";
+                    billingAddress.Description = shopper.ShopperAddress;
+                    billingAddress.ZipCode = "35130";
+                    request.BillingAddress = billingAddress;
+
+                    List<BasketItem> basketItems = new List<BasketItem>();
+
+                    //DummyListCreateile Yeni Bir Ürün Listesi Olşuturarak, Iyzico BasketItem modeline aktarıyoruz.
+                    //Buradaki Listeyi, Farklı bir View'den ürün seçimi yapılarak alabilirsiniz. !
+
+                    //Satın alınan ürün bilgilerini dolduralım.
+                    foreach (var item in newCarts)
+                    {
+                        BasketItem basketItem = new BasketItem();
+                        basketItem.Id = item.products.ID.ToString();
+                        basketItem.Name = item.products.ProductName;
+                        basketItem.Category1 = item.products.categoryProduct.CategoryName;
+                        basketItem.Category2 = "yok";
+                        basketItem.ItemType = BasketItemType.PHYSICAL.ToString();
+                        basketItem.Price = Convert.ToInt32(item.Price).ToString();
+                        basketItems.Add(basketItem);
+                    }
+
+                    request.BasketItems = basketItems;
+                    CheckoutFormInitialize checkoutFormInitialize = CheckoutFormInitialize.Create(request, options);
+                    ViewBag.Iyzico = checkoutFormInitialize.CheckoutFormContent;
+                    ViewBag.Error = checkoutFormInitialize.ErrorMessage;
+                    return View();
+
+                }
+                else
+                {
+                    return RedirectToAction("sonuc", "urun");
+                }
+            }
+            catch (Exception ex)
+            {
+                HttpContext.Session.Remove("cart");
+                HttpContext.Session.Clear();
+
+                return RedirectToAction("sonuc", "urun");
+            }
+
+        }
+
+        [HttpGet]
+        [Route("resultpay")]
+        public async Task<IActionResult> resultpay(RetrieveCheckoutFormRequest model)
+        {
+            try
+            {
+                string data = "";
+                Options options = new Options();
+                options.ApiKey = "xccI8zO2I0Z0hm0s3wYmcCELTK3X7Y4t"; //Iyzico Tarafından Sağlanan Api Key
+                options.SecretKey = "EyIvVToaDxVEFAGqD0TolRNJpmaOgQME"; //Iyzico Tarafından Sağlanan Secret Key
+                options.BaseUrl = "https://api.iyzipay.com";
+                data = model.Token;
+                RetrieveCheckoutFormRequest request = new RetrieveCheckoutFormRequest();
+                request.Token = data;
+                CheckoutForm checkoutForm = CheckoutForm.Retrieve(request, options);
+         
+                if (checkoutForm.PaymentStatus == "SUCCESS")
+                {
+                    #region İşlemler
+                    var callbackUrl = Url.Page("/bayi/hesabim", pageHandler: null, values: new { }, protocol: Request.Scheme);
 
                     string pathToFile = _webHostEnvironment.ContentRootPath + Path.DirectorySeparatorChar.ToString() + "Views" + Path.DirectorySeparatorChar.ToString() + "urun" + Path.DirectorySeparatorChar.ToString() + "email_order_complete.cshtml";
 
@@ -277,6 +420,16 @@ namespace tkytekstil.Controllers
                     }
 
                     string messageLink = $"Sipariş detayları için <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'></a>";
+
+                    var isAuthenticated = User.Identity.IsAuthenticated;
+                    ShoppersDto shopper = null;
+
+                    if (isAuthenticated)
+                    {
+                        shopper = _shopperservice.Get(Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+                    }
+
+                    var cart = SessionExtensionMethod.GetObject<List<CartItems>>(HttpContext.Session, "cart");
 
                     List<CartItems> newCarts = new List<CartItems>();
 
@@ -325,29 +478,134 @@ namespace tkytekstil.Controllers
                     };
 
                     await _contactDataService.sendMailOrderComplete(messageToShopper);
+                    #endregion
 
                     HttpContext.Session.Remove("cart");
                     HttpContext.Session.Clear();
-                }
 
-                return RedirectToAction("sonuc", "urun");
+                    return RedirectToAction("sonuc", "urun", new { error = "Başarılı!" });
+                }
+                else
+                {
+                    return RedirectToAction("sonuc", "urun", new { error = "Ödeme alınamadı" });
+                }
             }
             catch (Exception ex)
             {
-                HttpContext.Session.Remove("cart");
-                HttpContext.Session.Clear();
-
-                return RedirectToAction("sonuc", "urun");
+                return RedirectToAction("sonuc", "urun", new { error = ex.ToString() });
             }
-           
         }
+
 
         [HttpGet]
         [Route("sonuc")]
-        public IActionResult sonuc()
+        public async Task<IActionResult> sonuc(RetrieveCheckoutFormRequest model)
         {
-            TempData["FooterHave"] = 0;
-            return View();
+            try
+            {
+                string data = "";
+                Options options = new Options();
+                options.ApiKey = "xccI8zO2I0Z0hm0s3wYmcCELTK3X7Y4t"; //Iyzico Tarafından Sağlanan Api Key
+                options.SecretKey = "EyIvVToaDxVEFAGqD0TolRNJpmaOgQME"; //Iyzico Tarafından Sağlanan Secret Key
+                options.BaseUrl = "https://api.iyzipay.com";
+                data = model.Token;
+                RetrieveCheckoutFormRequest request = new RetrieveCheckoutFormRequest();
+                request.Token = data;
+                CheckoutForm checkoutForm = CheckoutForm.Retrieve(request, options);
+
+                if (checkoutForm.PaymentStatus == "SUCCESS")
+                {
+                    #region İşlemler
+                    var callbackUrl = Url.Page("/bayi/hesabim", pageHandler: null, values: new { }, protocol: Request.Scheme);
+
+                    string pathToFile = _webHostEnvironment.ContentRootPath + Path.DirectorySeparatorChar.ToString() + "Views" + Path.DirectorySeparatorChar.ToString() + "urun" + Path.DirectorySeparatorChar.ToString() + "email_order_complete.cshtml";
+
+                    string htmlBody = "";
+
+                    using (StreamReader streamReader = System.IO.File.OpenText(pathToFile))
+                    {
+                        htmlBody = streamReader.ReadToEnd();
+                    }
+
+                    string messageLink = $"Sipariş detayları için <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'></a>";
+
+                    var isAuthenticated = User.Identity.IsAuthenticated;
+                    ShoppersDto shopper = null;
+
+                    if (isAuthenticated)
+                    {
+                        shopper = _shopperservice.Get(Convert.ToInt32(User.FindFirst(ClaimTypes.NameIdentifier).Value));
+                    }
+
+                    var cart = SessionExtensionMethod.GetObject<List<CartItems>>(HttpContext.Session, "cart");
+
+                    List<CartItems> newCarts = new List<CartItems>();
+
+                    foreach (var item in cart)
+                    {
+                        var product = _productService.Get(item.products.ID);
+
+                        CartItems cartNew = new CartItems
+                        {
+                            products = product,
+                            Quantity = item.Quantity,
+                            Color = item.Color,
+                            Size = item.Size
+                        };
+                        newCarts.Add(cartNew);
+                    }
+
+                    ContactDataDto message = new ContactDataDto()
+                    {
+                        CompanyName = shopper.CompanyName,
+                        NameSurname = shopper.ShopperName,
+                        Address = shopper.ShopperAddress,
+                        City = shopper.ShopperCity,
+                        Province = shopper.ShopperProvice,
+                        Email = shopper.ShopperEmail,
+                        Subject = shopper.ShopperName + " sipariş oluşturdu.",
+                        Phone = shopper.ShopperPhone,
+                        To = "siparis@tkytekstil.com",
+                        Content = await _viewRenderService.RenderToString($"/Views/urun/email_order_complete.cshtml", newCarts),
+                    };
+
+                    await _contactDataService.sendMailOrderComplete(message);
+
+                    ContactDataDto messageToShopper = new ContactDataDto()
+                    {
+                        CompanyName = shopper.CompanyName,
+                        NameSurname = shopper.ShopperName,
+                        Address = shopper.ShopperAddress,
+                        City = shopper.ShopperCity,
+                        Province = shopper.ShopperProvice,
+                        Email = shopper.ShopperEmail,
+                        Subject = shopper.ShopperName + " sipariş oluşturdu.",
+                        Phone = shopper.ShopperPhone,
+                        To = shopper.ShopperEmail,
+                        Content = await _viewRenderService.RenderToString($"/Views/urun/email_order_complete.cshtml", newCarts),
+                    };
+
+                    await _contactDataService.sendMailOrderComplete(messageToShopper);
+                    #endregion
+
+                    HttpContext.Session.Remove("cart");
+                    HttpContext.Session.Clear();
+                    ViewBag.Error = "";
+
+                    return View();
+                }
+                else
+                {
+                    ViewBag.Error = "Sipariş alınamadı! Bir hata oluştu";
+
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.ToString();
+                return View();
+            }
         }
     
         private int isHaveItem(int id)
@@ -363,7 +621,7 @@ namespace tkytekstil.Controllers
             return -1;
         }
         
-        public IActionResult addCart(int Id, int adet, int colorId, int sizeId)
+        public IActionResult addCart(int Id, int adet, int colorId, int sizeId, int fiyat)
         {
 
             var colorGet = _colorService.Get(colorId);
@@ -382,11 +640,11 @@ namespace tkytekstil.Controllers
                 List<CartItems> cart = new List<CartItems>();
                 if (sizeId == 0)
                 {
-                    cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Image = products.ProductBaseImage });
+                    cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Image = products.ProductBaseImage, Price = fiyat });
                 }
                 else
                 {
-                    cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Size = size.SizeNumber, Image = products.ProductBaseImage });
+                    cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Size = size.SizeNumber, Image = products.ProductBaseImage, Price = fiyat });
                 }
             
 
@@ -404,9 +662,9 @@ namespace tkytekstil.Controllers
                     {
                         if(size == null)
                         {
-                            cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Image = products.ProductBaseImage });
+                            cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Image = products.ProductBaseImage, Price = fiyat });
                         }
-                        cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Size = size.SizeNumber, Image = products.ProductBaseImage });
+                        cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Size = size.SizeNumber, Image = products.ProductBaseImage, Price = fiyat });
                     } 
                     else
                     {
@@ -417,11 +675,11 @@ namespace tkytekstil.Controllers
                 {
                     if(size != null)
                     {
-                        cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Size = size.SizeNumber, Image = products.ProductBaseImage });
+                        cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Size = size.SizeNumber, Image = products.ProductBaseImage, Price = fiyat });
                     }
                     else
                     {
-                        cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Image = products.ProductBaseImage });
+                        cart.Add(new CartItems { products = _productService.Get(Id), Quantity = adet, Color = colorGet.ColorName, Image = products.ProductBaseImage, Price = fiyat });
                     }
                   
                 }

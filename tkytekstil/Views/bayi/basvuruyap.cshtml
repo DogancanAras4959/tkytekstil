@@ -48,6 +48,7 @@
                         <div class="single-input-item mb-1">
                             <input asp-for="ShopperUserName" type="text" placeholder="Kullanıcı adınızı giriniz">
                         </div>
+
                         <!-- Input Email End -->
                         <!-- Input Password Start -->
                         <div class="single-input-item mb-1">
@@ -89,23 +90,29 @@
                             <input asp-for="CompanyName" name="CompanyName" id="CompanyName" type="text" placeholder="Bayi adınızı belirleyiniz">
                         </div>
                         <div class="single-input-item mb-1">
-                            <input asp-for="ShopperUserName" name="ShopperUserName" id="ShopperUserName" type="text" placeholder="Kullanıcı adınızı belirleyiniz">
+                            <input asp-for="ShopperUserName" name="ShopperUserName" id="ShopperUserName" type="text" placeholder="Kullanıcı adınızı belirleyiniz" required>
                         </div>
 
                         <div class="single-input-item mb-1">
-                            <input asp-for="ShopperPassword" name="ShopperPassword" id="ShopperPassword" type="password" placeholder="Şifre belirleyiniz">
+                            <input asp-for="ShopperPassword" name="ShopperPassword" id="ShopperPassword" type="password" placeholder="Şifre belirleyiniz" required>
                         </div>
 
                         <div class="single-input-item mb-1">
-                            <input asp-for="ShopperName" name="ShopperName" id="ShopperName" type="text" placeholder="Adınız Soyadınız">
+                            <input asp-for="ShopperName" name="ShopperName" id="ShopperName" type="text" placeholder="Adınız" required>
+                        </div>
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperSurname" name="ShopperSurname" id="ShopperSurname" type="text" placeholder="Soyadınız" required>
+                        </div>
+                        <div class="single-input-item mb-1">
+                            <input asp-for="ShopperIdentityNumber" name="ShopperIdentityNumber" id="ShopperIdentityNumber" type="text" placeholder="TC Kimlik No" required>
                         </div>
                         <!-- Input First Name End -->
                         <div class="single-input-item mb-1">
-                            <input asp-for="ShopperEmail" name="ShopperEmail" id="ShopperEmail" type="email" placeholder="Email Adresiniz">
+                            <input asp-for="ShopperEmail" name="ShopperEmail" id="ShopperEmail" type="email" placeholder="Email Adresiniz" required>
                         </div>
                         <!-- Input Email Or Username Start -->
                         <div class="single-input-item mb-1">
-                            <input asp-for="ShopperPhone" name="ShopperPhone" id="ShopperPhone" type="tel" placeholder="Telefon Numarası">
+                            <input asp-for="ShopperPhone" name="ShopperPhone" id="ShopperPhone" type="tel" placeholder="Telefon Numarası" required>
                         </div>
                         <!-- Input Password Start -->
                         <div class="single-input-item mb-3">
@@ -113,10 +120,10 @@
                         </div>
 
                         <div class="single-input-item mb-1">
-                            <input asp-for="ShopperCity" name="ShopperCity" id="ShopperCity" class="form-control" type="text" placeholder="İl giriniz" />
+                            <input asp-for="ShopperCity" name="ShopperCity" id="ShopperCity" class="form-control" type="text" placeholder="İl giriniz" required/>
                         </div>
                         <div class="single-input-item mb-1">
-                            <input asp-for="ShopperProvice" name="ShopperProvice" id="ShopperProvice" class="form-control" type="text" placeholder="İlçe giriniz" />
+                            <input asp-for="ShopperProvice" name="ShopperProvice" id="ShopperProvice" class="form-control" type="text" placeholder="İlçe giriniz" required/>
                         </div>
                         <div class="single-input-item mb-1">
                             <button class="btn btn btn-dark btn-hover-primary rounded-0" type="submit">Başvuru Yap</button>

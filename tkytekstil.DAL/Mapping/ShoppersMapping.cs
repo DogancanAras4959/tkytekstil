@@ -17,6 +17,9 @@ namespace tkytekstil.DAL.Mapping
             builder.Property(x => x.ShopperEmail).HasMaxLength(70).IsRequired();
             builder.Property(x => x.ShopperPhone).HasMaxLength(70);
             builder.Property(x => x.ShopperAddress).HasMaxLength(70);
+            builder.Property(x => x.ShopperIdentityNumber).HasMaxLength(11);
+            builder.Property(x => x.ShopperSurname).HasMaxLength(200);
+            builder.Property(x => x.ShopperAddress).HasMaxLength(70);
             builder.Property(x => x.ShopperUserName).HasMaxLength(70);
             builder.Property(x => x.ShopperPassword).HasMaxLength(20);
             builder.HasOne(x => x.provinceShopper).WithMany(x => x.shopperList).HasForeignKey(x => x.ProvinceId);

@@ -36,6 +36,24 @@ namespace tkytekstil
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+            services.AddResponseCaching();
+
+            services.AddControllersWithViews().AddMvcOptions(options => options.Filters.Add(
+                new ResponseCacheAttribute
+                {
+                    NoStore = true,
+                    Location = ResponseCacheLocation.None
+                }));
+
+            services.AddControllers(options =>
+            {
+                options.CacheProfiles.Add("Default120", new CacheProfile()
+                {
+                    Duration = 120
+                });
+            });
+
             services.AddRazorPages().AddRazorPagesOptions(options => { options.Conventions.ConfigureFilter(new IgnoreAntiforgeryTokenAttribute()); });
 
             services.AddControllersWithViews().SetCompatibilityVersion(CompatibilityVersion.Latest);
@@ -98,7 +116,7 @@ namespace tkytekstil
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseResponseCaching();
             app.UseSession();
 
             app.UseRouting();

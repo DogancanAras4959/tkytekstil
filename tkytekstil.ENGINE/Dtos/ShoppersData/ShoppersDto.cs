@@ -15,6 +15,8 @@ namespace tkytekstil.ENGINE.Dtos.ShoppersData
         public string ShopperPassword { get; set; }
         public string ShopperName { get; set; }
         public string ShopperPhone { get; set; }
+        public string ShopperSurname { get; set; }
+        public string ShopperIdentityNumber { get; set; }
         public string ShopperEmail { get; set; }
         public string ShopperAddress { get; set; }
         public string ShopperCity { get; set; }

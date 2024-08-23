@@ -27,6 +27,7 @@ namespace tkytekstil.DAL.Models
         public decimal KDV { get; set; }
         public bool sortedRow { get; set; }
         public bool Vitrin { get; set; }
+        public decimal Price { get; set; }
         public int Quantity { get; set; }
         public bool ChooseSizeIsHave { get; set; }
 

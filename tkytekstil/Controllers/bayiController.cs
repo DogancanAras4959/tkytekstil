@@ -29,6 +29,7 @@ using tkytekstil.Models;
 
 namespace tkytekstil.Controllers
 {
+    [ResponseCache(CacheProfileName = "Default120")]
     public class bayiController : Controller
     {
 

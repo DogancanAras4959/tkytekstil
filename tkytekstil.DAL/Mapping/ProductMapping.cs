@@ -16,6 +16,7 @@ namespace tkytekstil.DAL.Mapping
             builder.HasKey(x => x.Id);
             builder.Property(x => x.ProductName).HasMaxLength(70).IsRequired();
             builder.Property(x => x.ProductSpot).HasMaxLength(500);
+            builder.Property(x => x.Price).HasMaxLength(15);
             builder.Property(x => x.ProductBaseImage).HasMaxLength(70).IsRequired();
 
             builder.HasOne(x => x.brandProduct).WithMany(x => x.productBrandList).HasForeignKey(x => x.BrandId);

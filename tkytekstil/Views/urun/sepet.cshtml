@@ -49,6 +49,7 @@
                                 <th class="pro-quantity">Renk</th>
                                 <th class="pro-quantity">Beden</th>
                                 <th class="pro-subtotal">Adet</th>
+                                <th class="pro-subtotal">Fiyat</th>
                                 <th class="pro-remove">İşlem</th>
                             </tr>
                         </thead>
@@ -64,6 +65,7 @@
                                 <td class="pro-price"><span>@item.Color</span></td>
                                 <td class="pro-price"><span>@item.Size</span></td>
                                 <td class="pro-price"><span>@item.Quantity</span></td>
+                                <td class="pro-price"><span>@Convert.ToInt32(item.Price*item.Quantity) TL</span></td>
                                 <td class="pro-remove"><a href="@Url.Action("remove","urun", new { Id = item.products.ID })"><i class="pe-7s-trash"></i></a></td>
                             </tr>
                                 }

@@ -21,6 +21,8 @@ namespace tkytekstil.DAL.Models
         public string ShopperUserName { get; set; }
         public string ShopperPassword { get; set; }
         public string ShopperName { get; set; }
+        public string ShopperSurname { get; set; }
+        public string ShopperIdentityNumber { get; set; }
         public string ShopperPhone { get; set; }
         public string ShopperEmail { get; set; }
         public string ShopperAddress { get; set; }

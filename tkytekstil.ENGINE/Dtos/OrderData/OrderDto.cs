@@ -15,6 +15,8 @@ namespace tkytekstil.ENGINE.Dtos.OrderData
         public string OrderNo { get; set; }
         public bool IsDone { get; set; }
         public int Quantity { get; set; }
+        public decimal TotalPrice { get; set; }
+
         public ShoppersDto shopper { get; set; }
         public List<ProductDto> productsListItem { get; set; }
     }

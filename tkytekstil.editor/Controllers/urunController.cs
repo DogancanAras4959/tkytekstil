@@ -441,6 +441,7 @@ namespace tkytekstil.editor.Controllers
             urun.ProductSpot = product.ProductSpot;
             urun.Quantity = product.Quantity;
             urun.ProductName = product.ProductName;
+            urun.Price = product.Price;
             urun.BrandId = product.BrandId;
             urun.CategoryId = product.CategoryId;
             urun.UpdatedTime = DateTime.Now;

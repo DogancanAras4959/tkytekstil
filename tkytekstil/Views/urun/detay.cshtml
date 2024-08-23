@@ -130,7 +130,10 @@
                     <div class="product-head mb-3">
                         <h2 class="product-title">@Model.ProductName</h2>
                     </div>
-
+                    <input type="hidden" value="@Model.Price" id="price_id" />
+                    <h4 class="price" style="display: flex; font-size: 35px; justify-content: flex-start; color: #e61e1e; font-weight: 700;">
+                        @Model.Price TL
+                    </h4>
                     <p class="desc-content mb-5">@Model.ProductSpot</p>
                     <!-- Description End -->
                     @if (Model.ChooseSizeIsHave == true)
@@ -241,9 +244,9 @@
                                 <div class="content">
                                     <h4 class="sub-title"><a href="@Url.Action("urunlerimiz","anasayfa", new { categoryId = item.CategoryId })">@item.categoryProduct.CategoryName</a></h4>
                                     <h5 class="title"><a href="@Url.Action("detay","urun", new { Id = item.ID, productname = item.GenerateSlug() })">@item.ProductName</a></h5>
-                                    @*<span class="price">
-                                            <span class="new">@item.ProductPrice ₺</span>
-                                        </span>*@
+                                    <span class="price">
+                                            <span class="new">@item.Price TL</span>
+                                        </span>
                                 </div>
                             </div>
                         </div>
@@ -272,12 +275,13 @@
     {
         var id = @Model.ID;
         var adet = Number.parseInt($("#quantityInput").val());
-        console.log("urunId: " + id + ", Adet: " + adet + ", Renk: " +  colorId + ", Beden: " +  sizeId);
+        var fiyat = Number.parseInt($("#price_id").val());
+        console.log("urunId: " + id + ", Adet: " + adet + ", Renk: " +  colorId + ", Beden: " +  sizeId, "Fiyat: " + fiyat);
 
         $.ajax({
             type: 'POST',
             url: '/urun/addCart/',
-            data: { Id: id, adet: adet, colorId: colorId, sizeId: sizeId },
+            data: { Id: id, adet: adet, colorId: colorId, sizeId: sizeId, fiyat: fiyat },
             success: function (response) {
                 if (response == true) {
                       window.location.assign('@Url.Action("sepet", "urun")');

@@ -16,6 +16,7 @@ namespace tkytekstil.ENGINE.Dtos.ProductData
         public string ProductName { get; set; }
         public string ProductSpot { get; set; }
         public string ProductBaseImage { get; set; }
+        public decimal Price { get; set; }
         public decimal KDV { get; set; }
         public bool Vitrin { get; set; }
         public bool SortedRow { get; set; }
